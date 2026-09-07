@@ -8,6 +8,7 @@ import {
   Eye,
   Filter,
   Loader2,
+  Pencil,
   Plus,
   Search,
   Trash2,
@@ -224,7 +225,7 @@ function BuilderProjects() {
 
         <div className="px-7 py-7">
 
-          <div className="flex items-center justify-between gap-6">
+          <div className="flex flex-col gap-4">
 
             {/* LEFT */}
 
@@ -306,10 +307,12 @@ function BuilderProjects() {
                 navigate("/admin/builder-projects/add")
               }
               className="
-                inline-flex
+                flex
+                w-full
                 h-12
                 shrink-0
                 items-center
+                justify-center
                 gap-2
                 rounded-xl
                 bg-[#070c22]
@@ -678,9 +681,9 @@ function BuilderProjects() {
           "
         >
 
-          {/* TABLE */}
+          {/* TABLE — desktop only */}
 
-          <div className="overflow-x-auto">
+          <div className="hidden overflow-x-auto md:block">
 
             <table className="min-w-[1050px] w-full">
 
@@ -1194,6 +1197,143 @@ function BuilderProjects() {
               </tbody>
 
             </table>
+
+          </div>
+
+
+          {/* =====================================================
+              MOBILE CARDS
+          ====================================================== */}
+
+          <div className="divide-y divide-slate-100 md:hidden">
+
+            {!loading && filteredProjects.map((project) => {
+
+              const projectStatus = project?.status || "active";
+
+              const statusClasses =
+                projectStatus.toLowerCase() === "active"
+                  ? "bg-emerald-50 text-emerald-600"
+                  : projectStatus.toLowerCase() === "upcoming"
+                  ? "bg-blue-50 text-blue-600"
+                  : projectStatus.toLowerCase() === "completed"
+                  ? "bg-purple-50 text-purple-600"
+                  : projectStatus.toLowerCase() === "ongoing"
+                  ? "bg-amber-50 text-amber-600"
+                  : "bg-slate-100 text-slate-500";
+
+              return (
+                <div key={project._id} className="px-4 py-4">
+
+                  <div className="flex gap-3">
+
+                    {/* THUMBNAIL */}
+
+                    <div className="h-[60px] w-[60px] shrink-0 overflow-hidden rounded-xl bg-[#eef3f8] flex items-center justify-center">
+                      {project?.image ? (
+                        <img
+                          src={project.image}
+                          alt={project?.name || "Project"}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <Building2 size={22} className="text-[#8fa2ba]" />
+                      )}
+                    </div>
+
+
+                    {/* CONTENT */}
+
+                    <div className="min-w-0 flex-1">
+
+                      {/* Name + Status */}
+
+                      <div className="flex items-start gap-2">
+
+                        <h3 className="min-w-0 flex-1 text-[13px] font-extrabold leading-snug text-[#14213d]">
+                          {project?.name || "Untitled Project"}
+                        </h3>
+
+                        <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-extrabold capitalize ${statusClasses}`}>
+                          {projectStatus}
+                        </span>
+
+                      </div>
+
+
+                      {/* Developer */}
+
+                      {project?.developer && (
+                        <p className="mt-1 text-[11px] font-semibold text-slate-400">
+                          {project.developer}
+                        </p>
+                      )}
+
+
+                      {/* Location */}
+
+                      {project?.location && (
+                        <p className="mt-0.5 text-[11px] text-slate-500">
+                          {project.location}
+                        </p>
+                      )}
+
+
+                      {/* Category + Actions */}
+
+                      <div className="mt-2.5 flex items-center justify-between gap-2">
+
+                        <div className="flex flex-wrap gap-1.5">
+                          {project?.category && (
+                            <span className="rounded-full bg-[#f2f6fa] px-2.5 py-1 text-[10px] font-bold capitalize text-[#526680]">
+                              {project.category}
+                            </span>
+                          )}
+                        </div>
+
+
+                        {/* Actions */}
+
+                        <div className="flex shrink-0 items-center gap-1">
+
+                          <button
+                            type="button"
+                            onClick={() => navigate(`/projects/${project._id}`)}
+                            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-800"
+                            title="View"
+                          >
+                            <Eye size={15} />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => navigate(`/admin/builder-projects/edit/${project._id}`)}
+                            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-[#fbf4e5] hover:text-[#b88b32]"
+                            title="Edit"
+                          >
+                            <Pencil size={15} />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setDeleteId(project._id)}
+                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#f0d9d9] bg-white text-[#bd7373] transition hover:bg-[#fff5f5] hover:text-[#b33f3f]"
+                            title="Delete"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              );
+            })}
 
           </div>
 

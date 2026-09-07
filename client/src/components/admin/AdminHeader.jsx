@@ -1,5 +1,4 @@
 import {
-  Bell,
   ChevronDown,
   UserCircle,
   Menu,
@@ -90,39 +89,6 @@ function AdminHeader({ onMenuClick }) {
         ==================================================== */}
 
         <div className="flex items-center gap-2 sm:gap-3">
-
-          {/* Notification */}
-
-          <button
-            type="button"
-            className="
-              relative
-              flex
-              h-10
-              w-10
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-slate-200
-              bg-white
-              text-slate-500
-              transition
-              hover:bg-slate-50
-              hover:text-slate-900
-            "
-            aria-label="Notifications"
-          >
-            <Bell
-              size={18}
-              strokeWidth={1.8}
-            />
-
-            {/* Notification Dot */}
-
-            <span className="absolute right-[9px] top-[8px] h-1.5 w-1.5 rounded-full bg-[#d6a84f]" />
-          </button>
-
 
           {/* Divider */}
 

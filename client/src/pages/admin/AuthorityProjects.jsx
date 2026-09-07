@@ -11,11 +11,13 @@ import {
   Plus,
   Search,
   Star,
+  Trash2,
   X,
 } from "lucide-react";
 
 import {
   getAuthorityProjects,
+  deleteAuthorityProject,
 } from "../../services/authorityProjectService";
 
 
@@ -28,6 +30,9 @@ function AuthorityProjects() {
 
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
+
+  const [deleteId, setDeleteId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
 
   // =========================================================
@@ -58,8 +63,8 @@ function AuthorityProjects() {
 
       setError(
         err?.response?.data?.message ||
-          err?.message ||
-          "Failed to load authority projects."
+        err?.message ||
+        "Failed to load authority projects."
       );
     } finally {
       setLoading(false);
@@ -128,7 +133,7 @@ function AuthorityProjects() {
   const isFeatured = (project) => {
     return Boolean(
       project?.featured ??
-        project?.isFeatured
+      project?.isFeatured
     );
   };
 
@@ -136,7 +141,7 @@ function AuthorityProjects() {
   const isNewProject = (project) => {
     return Boolean(
       project?.newProject ??
-        project?.isNewProject
+      project?.isNewProject
     );
   };
 
@@ -179,7 +184,7 @@ function AuthorityProjects() {
       const matchesStatus =
         status === "all" ||
         projectStatus.toLowerCase() ===
-          status.toLowerCase();
+        status.toLowerCase();
 
 
       return (
@@ -229,6 +234,36 @@ function AuthorityProjects() {
 
 
   // =========================================================
+  // DELETE
+  // =========================================================
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
+
+    try {
+      setDeleting(true);
+
+      await deleteAuthorityProject(deleteId);
+
+      setProjects((prev) =>
+        prev.filter(
+          (p) => (p._id || p.id) !== deleteId
+        )
+      );
+
+      setDeleteId(null);
+    } catch (err) {
+      console.error(
+        "Failed to delete authority project:",
+        err
+      );
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+
+  // =========================================================
   // ADD
   // =========================================================
 
@@ -244,51 +279,52 @@ function AuthorityProjects() {
   // =========================================================
 
   return (
-    <div className="min-h-full bg-slate-50">
+    <>
+      <div className="min-h-full bg-slate-50">
 
-      {/* =====================================================
+        {/* =====================================================
           PAGE HEADER
       ====================================================== */}
 
-      <div className="border-b border-slate-200 bg-white">
-        <div className="px-6 py-6 lg:px-8">
+        <div className="border-b border-slate-200 bg-white">
+          <div className="px-6 py-6 lg:px-8">
 
-          <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
 
-            <div>
+              <div>
 
-              <div className="mb-2 flex items-center gap-2">
+                <div className="mb-2 flex items-center gap-2">
 
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f8f0df] text-[#b88b32]">
-                  <Building2
-                    size={17}
-                    strokeWidth={1.8}
-                  />
-                </span>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f8f0df] text-[#b88b32]">
+                    <Building2
+                      size={17}
+                      strokeWidth={1.8}
+                    />
+                  </span>
 
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#b88b32]">
-                  Project Management
-                </span>
+                  <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#b88b32]">
+                    Project Management
+                  </span>
+
+                </div>
+
+
+                <h1 className="text-2xl font-extrabold tracking-tight text-slate-950">
+                  Authority Projects
+                </h1>
+
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Manage all authority-led real estate projects.
+                </p>
 
               </div>
 
 
-              <h1 className="text-2xl font-extrabold tracking-tight text-slate-950">
-                Authority Projects
-              </h1>
-
-
-              <p className="mt-1 text-sm text-slate-500">
-                Manage all authority-led real estate projects.
-              </p>
-
-            </div>
-
-
-            <button
-              type="button"
-              onClick={handleAdd}
-              className="
+              <button
+                type="button"
+                onClick={handleAdd}
+                className="
                 inline-flex
                 h-11
                 items-center
@@ -304,40 +340,40 @@ function AuthorityProjects() {
                 transition
                 hover:bg-slate-800
               "
-            >
-              <Plus size={17} />
-              Add Authority Project
-            </button>
+              >
+                <Plus size={17} />
+                Add Authority Project
+              </button>
+
+            </div>
 
           </div>
-
         </div>
-      </div>
 
 
-      {/* =====================================================
+        {/* =====================================================
           CONTENT
       ====================================================== */}
 
-      <div className="px-6 py-6 lg:px-8">
+        <div className="px-6 py-6 lg:px-8">
 
 
-        {/* ===================================================
+          {/* ===================================================
             FILTER BAR
         ==================================================== */}
 
-        <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
 
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
 
 
-            {/* SEARCH */}
+              {/* SEARCH */}
 
-            <div className="relative flex-1">
+              <div className="relative flex-1">
 
-              <Search
-                size={18}
-                className="
+                <Search
+                  size={18}
+                  className="
                   pointer-events-none
                   absolute
                   left-4
@@ -345,16 +381,16 @@ function AuthorityProjects() {
                   -translate-y-1/2
                   text-slate-400
                 "
-              />
+                />
 
-              <input
-                type="text"
-                value={search}
-                onChange={(e) =>
-                  setSearch(e.target.value)
-                }
-                placeholder="Search authority projects..."
-                className="
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) =>
+                    setSearch(e.target.value)
+                  }
+                  placeholder="Search authority projects..."
+                  className="
                   h-11
                   w-full
                   rounded-xl
@@ -374,16 +410,16 @@ function AuthorityProjects() {
                   focus:ring-2
                   focus:ring-[#d6a84f]/10
                 "
-              />
+                />
 
 
-              {search && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    setSearch("")
-                  }
-                  className="
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSearch("")
+                    }
+                    className="
                     absolute
                     right-3
                     top-1/2
@@ -398,21 +434,21 @@ function AuthorityProjects() {
                     hover:bg-slate-100
                     hover:text-slate-700
                   "
-                >
-                  <X size={15} />
-                </button>
-              )}
+                  >
+                    <X size={15} />
+                  </button>
+                )}
 
-            </div>
+              </div>
 
 
-            {/* STATUS */}
+              {/* STATUS */}
 
-            <div className="relative w-full lg:w-[190px]">
+              <div className="relative w-full lg:w-[190px]">
 
-              <Filter
-                size={16}
-                className="
+                <Filter
+                  size={16}
+                  className="
                   pointer-events-none
                   absolute
                   left-3
@@ -420,15 +456,15 @@ function AuthorityProjects() {
                   -translate-y-1/2
                   text-slate-400
                 "
-              />
+                />
 
 
-              <select
-                value={status}
-                onChange={(e) =>
-                  setStatus(e.target.value)
-                }
-                className="
+                <select
+                  value={status}
+                  onChange={(e) =>
+                    setStatus(e.target.value)
+                  }
+                  className="
                   h-11
                   w-full
                   appearance-none
@@ -447,34 +483,34 @@ function AuthorityProjects() {
                   focus:ring-2
                   focus:ring-[#d6a84f]/10
                 "
-              >
+                >
 
-                <option value="all">
-                  All Status
-                </option>
+                  <option value="all">
+                    All Status
+                  </option>
 
-                <option value="active">
-                  Active
-                </option>
+                  <option value="active">
+                    Active
+                  </option>
 
-                <option value="upcoming">
-                  Upcoming
-                </option>
+                  <option value="upcoming">
+                    Upcoming
+                  </option>
 
-                <option value="completed">
-                  Completed
-                </option>
+                  <option value="completed">
+                    Completed
+                  </option>
 
-                <option value="inactive">
-                  Inactive
-                </option>
+                  <option value="inactive">
+                    Inactive
+                  </option>
 
-              </select>
+                </select>
 
 
-              <ChevronDown
-                size={16}
-                className="
+                <ChevronDown
+                  size={16}
+                  className="
                   pointer-events-none
                   absolute
                   right-3
@@ -482,99 +518,99 @@ function AuthorityProjects() {
                   -translate-y-1/2
                   text-slate-400
                 "
-              />
+                />
+
+              </div>
 
             </div>
 
           </div>
 
-        </div>
 
-
-        {/* ===================================================
+          {/* ===================================================
             PROJECT COUNT
         ==================================================== */}
 
-        <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
 
-          <div>
+            <div>
 
-            <h2 className="text-sm font-extrabold text-slate-900">
-              All Authority Projects
-            </h2>
+              <h2 className="text-sm font-extrabold text-slate-900">
+                All Authority Projects
+              </h2>
 
-            <p className="mt-0.5 text-xs text-slate-400">
-              {filteredProjects.length}{" "}
-              {filteredProjects.length === 1
-                ? "project"
-                : "projects"}{" "}
-              found
-            </p>
+              <p className="mt-0.5 text-xs text-slate-400">
+                {filteredProjects.length}{" "}
+                {filteredProjects.length === 1
+                  ? "project"
+                  : "projects"}{" "}
+                found
+              </p>
 
-          </div>
+            </div>
 
 
-          {(search || status !== "all") && (
-            <button
-              type="button"
-              onClick={() => {
-                setSearch("");
-                setStatus("all");
-              }}
-              className="
+            {(search || status !== "all") && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setStatus("all");
+                }}
+                className="
                 text-xs
                 font-bold
                 text-[#b88b32]
                 hover:underline
               "
-            >
-              Clear filters
-            </button>
-          )}
+              >
+                Clear filters
+              </button>
+            )}
 
-        </div>
+          </div>
 
 
-        {/* ===================================================
+          {/* ===================================================
             LOADING
         ==================================================== */}
 
-        {loading && (
-          <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-slate-200 bg-white">
+          {loading && (
+            <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-slate-200 bg-white">
 
-            <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-col items-center gap-3">
 
-              <Loader2
-                size={28}
-                className="animate-spin text-[#b88b32]"
-              />
+                <Loader2
+                  size={28}
+                  className="animate-spin text-[#b88b32]"
+                />
 
-              <p className="text-sm font-medium text-slate-500">
-                Loading authority projects...
-              </p>
+                <p className="text-sm font-medium text-slate-500">
+                  Loading authority projects...
+                </p>
+
+              </div>
 
             </div>
-
-          </div>
-        )}
+          )}
 
 
-        {/* ===================================================
+          {/* ===================================================
             ERROR
         ==================================================== */}
 
-        {!loading && error && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-6">
+          {!loading && error && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-6">
 
-            <p className="text-sm font-bold text-red-700">
-              {error}
-            </p>
+              <p className="text-sm font-bold text-red-700">
+                {error}
+              </p>
 
 
-            <button
-              type="button"
-              onClick={fetchAuthorityProjects}
-              className="
+              <button
+                type="button"
+                onClick={fetchAuthorityProjects}
+                className="
                 mt-3
                 rounded-lg
                 bg-white
@@ -588,196 +624,196 @@ function AuthorityProjects() {
                 ring-red-200
                 hover:bg-red-50
               "
-            >
-              Try Again
-            </button>
+              >
+                Try Again
+              </button>
 
-          </div>
-        )}
+            </div>
+          )}
 
 
-        {/* ===================================================
+          {/* ===================================================
             TABLE
         ==================================================== */}
 
-        {!loading && !error && (
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          {!loading && !error && (
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
 
-            {/* =================================================
+              {/* =================================================
                 DESKTOP TABLE
             ================================================== */}
 
-            <div className="hidden overflow-x-auto lg:block">
+              <div className="hidden overflow-x-auto lg:block">
 
-              <table className="w-full min-w-[900px]">
+                <table className="w-full min-w-[900px]">
 
-                <thead>
+                  <thead>
 
-                  <tr className="border-b border-slate-200 bg-slate-50/80">
+                    <tr className="border-b border-slate-200 bg-slate-50/80">
 
-                    <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                      Project
-                    </th>
+                      <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                        Project
+                      </th>
 
-                    <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                      Authority
-                    </th>
+                      <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                        Authority
+                      </th>
 
-                    <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                      Location
-                    </th>
+                      <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                        Location
+                      </th>
 
-                    <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                      Visibility
-                    </th>
+                      <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                        Visibility
+                      </th>
 
-                    <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                      Status
-                    </th>
+                      <th className="px-5 py-4 text-left text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                        Status
+                      </th>
 
-                    <th className="px-5 py-4 text-right text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                      Actions
-                    </th>
+                      <th className="px-5 py-4 text-right text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                        Actions
+                      </th>
 
-                  </tr>
+                    </tr>
 
-                </thead>
-
-
-                <tbody className="divide-y divide-slate-100">
-
-                  {filteredProjects.map(
-                    (project) => {
-
-                      const projectStatus =
-                        getStatus(project);
-
-                      const id =
-                        project?._id ||
-                        project?.id;
-
-                      return (
-                        <tr
-                          key={id}
-                          className="transition hover:bg-slate-50/60"
-                        >
+                  </thead>
 
 
-                          {/* PROJECT */}
+                  <tbody className="divide-y divide-slate-100">
 
-                          <td className="px-5 py-4">
+                    {filteredProjects.map(
+                      (project) => {
 
-                            <div className="flex items-center gap-3">
+                        const projectStatus =
+                          getStatus(project);
 
-                              <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+                        const id =
+                          project?._id ||
+                          project?.id;
 
-                                {project?.image ? (
-                                  <img
-                                    src={project.image}
-                                    alt={getProjectName(
+                        return (
+                          <tr
+                            key={id}
+                            className="transition hover:bg-slate-50/60"
+                          >
+
+
+                            {/* PROJECT */}
+
+                            <td className="px-5 py-4">
+
+                              <div className="flex items-center gap-3">
+
+                                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+
+                                  {project?.image ? (
+                                    <img
+                                      src={project.image}
+                                      alt={getProjectName(
+                                        project
+                                      )}
+                                      className="h-full w-full object-cover"
+                                    />
+                                  ) : (
+                                    <Building2
+                                      size={19}
+                                      className="text-slate-400"
+                                    />
+                                  )}
+
+                                </div>
+
+
+                                <div className="min-w-0">
+
+                                  <p className="truncate text-sm font-extrabold text-slate-900">
+                                    {getProjectName(
                                       project
                                     )}
-                                    className="h-full w-full object-cover"
-                                  />
-                                ) : (
-                                  <Building2
-                                    size={19}
-                                    className="text-slate-400"
-                                  />
+                                  </p>
+
+                                  <p className="mt-0.5 text-xs text-slate-400">
+                                    Authority Project
+                                  </p>
+
+                                </div>
+
+                              </div>
+
+                            </td>
+
+
+                            {/* AUTHORITY */}
+
+                            <td className="px-5 py-4">
+
+                              <span className="text-sm font-semibold text-slate-700">
+                                {getAuthorityName(
+                                  project
                                 )}
+                              </span>
 
-                              </div>
-
-
-                              <div className="min-w-0">
-
-                                <p className="truncate text-sm font-extrabold text-slate-900">
-                                  {getProjectName(
-                                    project
-                                  )}
-                                </p>
-
-                                <p className="mt-0.5 text-xs text-slate-400">
-                                  Authority Project
-                                </p>
-
-                              </div>
-
-                            </div>
-
-                          </td>
+                            </td>
 
 
-                          {/* AUTHORITY */}
+                            {/* LOCATION */}
 
-                          <td className="px-5 py-4">
+                            <td className="px-5 py-4">
 
-                            <span className="text-sm font-semibold text-slate-700">
-                              {getAuthorityName(
-                                project
-                              )}
-                            </span>
+                              <span className="text-sm font-medium text-slate-600">
+                                {getLocation(project)}
+                              </span>
 
-                          </td>
+                            </td>
 
 
-                          {/* LOCATION */}
+                            {/* VISIBILITY */}
 
-                          <td className="px-5 py-4">
+                            <td className="px-5 py-4">
 
-                            <span className="text-sm font-medium text-slate-600">
-                              {getLocation(project)}
-                            </span>
+                              <div className="flex flex-wrap gap-1.5">
 
-                          </td>
+                                {isFeatured(project) && (
+                                  <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf4e5] px-2.5 py-1 text-[10px] font-bold text-[#a47723]">
 
+                                    <Star
+                                      size={11}
+                                      fill="currentColor"
+                                    />
 
-                          {/* VISIBILITY */}
+                                    Featured
 
-                          <td className="px-5 py-4">
-
-                            <div className="flex flex-wrap gap-1.5">
-
-                              {isFeatured(project) && (
-                                <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf4e5] px-2.5 py-1 text-[10px] font-bold text-[#a47723]">
-
-                                  <Star
-                                    size={11}
-                                    fill="currentColor"
-                                  />
-
-                                  Featured
-
-                                </span>
-                              )}
-
-
-                              {isNewProject(project) && (
-                                <span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold text-blue-600">
-                                  New
-                                </span>
-                              )}
-
-
-                              {!isFeatured(project) &&
-                                !isNewProject(project) && (
-                                  <span className="text-xs text-slate-400">
-                                    —
                                   </span>
                                 )}
 
-                            </div>
 
-                          </td>
+                                {isNewProject(project) && (
+                                  <span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold text-blue-600">
+                                    New
+                                  </span>
+                                )}
 
 
-                          {/* STATUS */}
+                                {!isFeatured(project) &&
+                                  !isNewProject(project) && (
+                                    <span className="text-xs text-slate-400">
+                                      —
+                                    </span>
+                                  )}
 
-                          <td className="px-5 py-4">
+                              </div>
 
-                            <span
-                              className={`
+                            </td>
+
+
+                            {/* STATUS */}
+
+                            <td className="px-5 py-4">
+
+                              <span
+                                className={`
                                 inline-flex
                                 rounded-full
                                 px-2.5
@@ -785,38 +821,37 @@ function AuthorityProjects() {
                                 text-[10px]
                                 font-extrabold
                                 capitalize
-                                ${
-                                  projectStatus.toLowerCase() ===
-                                  "active"
+                                ${projectStatus.toLowerCase() ===
+                                    "active"
                                     ? "bg-emerald-50 text-emerald-600"
                                     : projectStatus.toLowerCase() ===
                                       "upcoming"
-                                    ? "bg-blue-50 text-blue-600"
-                                    : projectStatus.toLowerCase() ===
-                                      "completed"
-                                    ? "bg-purple-50 text-purple-600"
-                                    : "bg-slate-100 text-slate-500"
-                                }
+                                      ? "bg-blue-50 text-blue-600"
+                                      : projectStatus.toLowerCase() ===
+                                        "completed"
+                                        ? "bg-purple-50 text-purple-600"
+                                        : "bg-slate-100 text-slate-500"
+                                  }
                               `}
-                            >
-                              {projectStatus}
-                            </span>
+                              >
+                                {projectStatus}
+                              </span>
 
-                          </td>
+                            </td>
 
 
-                          {/* ACTIONS */}
+                            {/* ACTIONS */}
 
-                          <td className="px-5 py-4">
+                            <td className="px-5 py-4">
 
-                            <div className="flex items-center justify-end gap-1.5">
+                              <div className="flex items-center justify-end gap-1.5">
 
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleView(project)
-                                }
-                                className="
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleView(project)
+                                  }
+                                  className="
                                   flex
                                   h-9
                                   w-9
@@ -828,18 +863,18 @@ function AuthorityProjects() {
                                   hover:bg-slate-100
                                   hover:text-slate-800
                                 "
-                                title="View Project"
-                              >
-                                <Eye size={16} />
-                              </button>
+                                  title="View Project"
+                                >
+                                  <Eye size={16} />
+                                </button>
 
 
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleEdit(project)
-                                }
-                                className="
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleEdit(project)
+                                  }
+                                  className="
                                   flex
                                   h-9
                                   w-9
@@ -851,113 +886,111 @@ function AuthorityProjects() {
                                   hover:bg-[#fbf4e5]
                                   hover:text-[#b88b32]
                                 "
-                                title="Edit Project"
-                              >
-                                <Pencil size={16} />
-                              </button>
-
-                            </div>
-
-                          </td>
-
-                        </tr>
-                      );
-                    }
-                  )}
-
-                </tbody>
-
-              </table>
-
-            </div>
+                                  title="Edit Project"
+                                >
+                                  <Pencil size={16} />
+                                </button>
 
 
-            {/* =================================================
+                                {/* DELETE */}
+
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setDeleteId(id)
+                                  }
+                                  className="
+                                  flex
+                                  h-9
+                                  w-9
+                                  items-center
+                                  justify-center
+                                  rounded-lg
+                                  border
+                                  border-[#f0d9d9]
+                                  bg-white
+                                  text-[#bd7373]
+                                  transition
+                                  hover:bg-[#fff5f5]
+                                  hover:text-[#b33f3f]
+                                "
+                                  title="Delete Project"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+
+                              </div>
+
+                            </td>
+
+                          </tr>
+                        );
+                      }
+                    )}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+
+              {/* =================================================
                 MOBILE CARDS
             ================================================== */}
 
-            <div className="divide-y divide-slate-100 lg:hidden">
+              <div className="divide-y divide-slate-100 lg:hidden">
 
-              {filteredProjects.map(
-                (project) => {
+                {filteredProjects.map((project) => {
 
-                  const projectStatus =
-                    getStatus(project);
+                  const projectStatus = getStatus(project);
+                  const id = project?._id || project?.id;
+
+                  const statusClasses =
+                    projectStatus.toLowerCase() === "active"
+                      ? "bg-emerald-50 text-emerald-600"
+                      : projectStatus.toLowerCase() === "upcoming"
+                      ? "bg-blue-50 text-blue-600"
+                      : projectStatus.toLowerCase() === "completed"
+                      ? "bg-purple-50 text-purple-600"
+                      : projectStatus.toLowerCase() === "ongoing"
+                      ? "bg-amber-50 text-amber-600"
+                      : "bg-slate-100 text-slate-500";
 
                   return (
-                    <div
-                      key={
-                        project?._id ||
-                        project?.id
-                      }
-                      className="p-4"
-                    >
+                    <div key={id} className="px-4 py-4">
 
                       <div className="flex gap-3">
 
-                        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+                        {/* THUMBNAIL */}
 
+                        <div className="h-[60px] w-[60px] shrink-0 overflow-hidden rounded-xl bg-slate-100 flex items-center justify-center">
                           {project?.image ? (
                             <img
                               src={project.image}
-                              alt={getProjectName(
-                                project
-                              )}
+                              alt={getProjectName(project)}
                               className="h-full w-full object-cover"
                             />
                           ) : (
-                            <Building2
-                              size={21}
-                              className="text-slate-400"
-                            />
+                            <Building2 size={22} className="text-slate-400" />
                           )}
-
                         </div>
 
 
+                        {/* CONTENT */}
+
                         <div className="min-w-0 flex-1">
 
-                          <div className="flex items-start justify-between gap-2">
+                          {/* Name + Status */}
 
-                            <div>
+                          <div className="flex items-start gap-2">
 
-                              <h3 className="truncate text-sm font-extrabold text-slate-900">
-                                {getProjectName(
-                                  project
-                                )}
-                              </h3>
-
-                              <p className="mt-1 text-xs text-slate-400">
-                                {getAuthorityName(
-                                  project
-                                )}
-                              </p>
-
-                            </div>
-
+                            <h3 className="min-w-0 flex-1 text-[13px] font-extrabold leading-snug text-slate-900">
+                              {getProjectName(project)}
+                            </h3>
 
                             <span
-                              className={`
-                                shrink-0
-                                rounded-full
-                                px-2
-                                py-1
-                                text-[9px]
-                                font-extrabold
-                                capitalize
-                                ${
-                                  projectStatus.toLowerCase() ===
-                                  "active"
-                                    ? "bg-emerald-50 text-emerald-600"
-                                    : projectStatus.toLowerCase() ===
-                                      "upcoming"
-                                    ? "bg-blue-50 text-blue-600"
-                                    : projectStatus.toLowerCase() ===
-                                      "completed"
-                                    ? "bg-purple-50 text-purple-600"
-                                    : "bg-slate-100 text-slate-500"
-                                }
-                              `}
+                              className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-extrabold capitalize ${statusClasses}`}
                             >
                               {projectStatus}
                             </span>
@@ -965,31 +998,35 @@ function AuthorityProjects() {
                           </div>
 
 
-                          <p className="mt-2 text-xs font-medium text-slate-500">
+                          {/* Authority */}
+
+                          <p className="mt-1 text-[11px] font-semibold text-slate-400">
+                            {getAuthorityName(project)}
+                          </p>
+
+
+                          {/* Location */}
+
+                          <p className="mt-0.5 text-[11px] text-slate-500">
                             {getLocation(project)}
                           </p>
 
 
-                          <div className="mt-3 flex items-center justify-between">
+                          {/* Badges + Actions */}
 
-                            <div className="flex gap-1.5">
+                          <div className="mt-2.5 flex items-center justify-between gap-2">
+
+                            <div className="flex flex-wrap gap-1.5">
 
                               {isFeatured(project) && (
-                                <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf4e5] px-2 py-1 text-[9px] font-bold text-[#a47723]">
-
-                                  <Star
-                                    size={10}
-                                    fill="currentColor"
-                                  />
-
+                                <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf4e5] px-2.5 py-1 text-[10px] font-bold text-[#a47723]">
+                                  <Star size={10} fill="currentColor" />
                                   Featured
-
                                 </span>
                               )}
 
-
                               {isNewProject(project) && (
-                                <span className="rounded-full bg-blue-50 px-2 py-1 text-[9px] font-bold text-blue-600">
+                                <span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold text-blue-600">
                                   New
                                 </span>
                               )}
@@ -997,27 +1034,35 @@ function AuthorityProjects() {
                             </div>
 
 
-                            <div className="flex gap-1">
+                            {/* Action Buttons */}
+
+                            <div className="flex shrink-0 items-center gap-1">
 
                               <button
                                 type="button"
-                                onClick={() =>
-                                  handleView(project)
-                                }
-                                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-800"
+                                onClick={() => handleView(project)}
+                                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-800"
+                                title="View"
                               >
                                 <Eye size={15} />
                               </button>
 
+                              <button
+                                type="button"
+                                onClick={() => handleEdit(project)}
+                                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-[#fbf4e5] hover:text-[#b88b32]"
+                                title="Edit"
+                              >
+                                <Pencil size={15} />
+                              </button>
 
                               <button
                                 type="button"
-                                onClick={() =>
-                                  handleEdit(project)
-                                }
-                                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-[#fbf4e5] hover:text-[#b88b32]"
+                                onClick={() => setDeleteId(id)}
+                                className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#f0d9d9] bg-white text-[#bd7373] transition hover:bg-[#fff5f5] hover:text-[#b33f3f]"
+                                title="Delete"
                               >
-                                <Pencil size={15} />
+                                <Trash2 size={15} />
                               </button>
 
                             </div>
@@ -1030,42 +1075,41 @@ function AuthorityProjects() {
 
                     </div>
                   );
-                }
-              )}
+                })}
 
-            </div>
+              </div>
 
 
-            {/* =================================================
+              {/* =================================================
                 EMPTY STATE
             ================================================== */}
 
-            {filteredProjects.length === 0 && (
-              <div className="flex min-h-[300px] flex-col items-center justify-center px-6 text-center">
+              {filteredProjects.length === 0 && (
+                <div className="flex min-h-[300px] flex-col items-center justify-center px-6 text-center">
 
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
-                  <Building2 size={24} />
-                </div>
-
-
-                <h3 className="mt-4 text-sm font-extrabold text-slate-900">
-                  No authority projects found
-                </h3>
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                    <Building2 size={24} />
+                  </div>
 
 
-                <p className="mt-1 max-w-sm text-xs leading-5 text-slate-400">
-                  {search || status !== "all"
-                    ? "Try changing your search or filters."
-                    : "Start by adding your first authority project."}
-                </p>
+                  <h3 className="mt-4 text-sm font-extrabold text-slate-900">
+                    No authority projects found
+                  </h3>
 
 
-                {!search &&
-                  status === "all" && (
-                    <button
-                      type="button"
-                      onClick={handleAdd}
-                      className="
+                  <p className="mt-1 max-w-sm text-xs leading-5 text-slate-400">
+                    {search || status !== "all"
+                      ? "Try changing your search or filters."
+                      : "Start by adding your first authority project."}
+                  </p>
+
+
+                  {!search &&
+                    status === "all" && (
+                      <button
+                        type="button"
+                        onClick={handleAdd}
+                        className="
                         mt-4
                         inline-flex
                         items-center
@@ -1079,21 +1123,166 @@ function AuthorityProjects() {
                         text-white
                         hover:bg-slate-800
                       "
-                    >
-                      <Plus size={15} />
-                      Add Authority Project
-                    </button>
-                  )}
+                      >
+                        <Plus size={15} />
+                        Add Authority Project
+                      </button>
+                    )}
 
-              </div>
-            )}
+                </div>
+              )}
 
-          </div>
-        )}
+            </div>
+          )}
+
+        </div>
 
       </div>
 
-    </div>
+
+      {/* =====================================================
+          DELETE MODAL
+      ====================================================== */}
+
+      {deleteId && (
+        <div
+          className="
+            fixed
+            inset-0
+            z-[100]
+            flex
+            items-center
+            justify-center
+            bg-[#07112b]/40
+            px-4
+            backdrop-blur-[2px]
+          "
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              setDeleteId(null);
+            }
+          }}
+        >
+
+          <div
+            className="
+              w-full
+              max-w-md
+              rounded-2xl
+              border
+              border-[#dce5ef]
+              bg-white
+              p-6
+              shadow-2xl
+            "
+          >
+
+            <div
+              className="
+                flex
+                h-12
+                w-12
+                items-center
+                justify-center
+                rounded-xl
+                bg-red-50
+                text-red-600
+              "
+            >
+              <Trash2 size={21} />
+            </div>
+
+            <h3
+              className="
+                mt-5
+                text-xl
+                font-bold
+                text-[#07112b]
+              "
+            >
+              Delete Authority Project?
+            </h3>
+
+            <p
+              className="
+                mt-2
+                text-sm
+                leading-6
+                text-[#7083a0]
+              "
+            >
+              This project will be permanently removed.
+              This action cannot be undone.
+            </p>
+
+
+            <div className="mt-6 flex justify-end gap-3">
+
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() =>
+                  setDeleteId(null)
+                }
+                className="
+                  h-11
+                  rounded-xl
+                  border
+                  border-[#dce5ef]
+                  bg-white
+                  px-5
+                  text-sm
+                  font-semibold
+                  text-[#526680]
+                  transition
+                  hover:bg-[#f7f9fb]
+                  disabled:opacity-50
+                "
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={handleDelete}
+                className="
+                  inline-flex
+                  h-11
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-[#b33f3f]
+                  px-5
+                  text-sm
+                  font-semibold
+                  text-white
+                  transition
+                  hover:bg-[#993434]
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
+                "
+              >
+
+                {deleting && (
+                  <Loader2
+                    size={16}
+                    className="animate-spin"
+                  />
+                )}
+
+                Delete Project
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+    </>
   );
 }
 

@@ -1,17 +1,42 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 
 function AdminLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-100">
+
+      {/* =====================================================
+          MOBILE BACKDROP
+      ====================================================== */}
+
+      {sidebarOpen && (
+        <div
+          className="
+            fixed
+            inset-0
+            z-30
+            bg-slate-950/40
+            backdrop-blur-[2px]
+            lg:hidden
+          "
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
 
       {/* =====================================================
           SIDEBAR
       ====================================================== */}
 
-      <AdminSidebar />
+      <AdminSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
 
       {/* =====================================================
@@ -24,7 +49,9 @@ function AdminLayout() {
             HEADER
         ================================================== */}
 
-        <AdminHeader />
+        <AdminHeader
+          onMenuClick={() => setSidebarOpen(true)}
+        />
 
 
         {/* =================================================

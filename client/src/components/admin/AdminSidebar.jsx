@@ -91,8 +91,10 @@ function AdminSidebar({ open, onClose }) {
         left-0
         z-40
         flex
+        h-full
         w-[260px]
         flex-col
+        overflow-hidden
         border-r
         border-slate-200
         bg-white
@@ -295,7 +297,7 @@ function AdminSidebar({ open, onClose }) {
           BOTTOM
       ====================================================== */}
 
-      <div className="border-t border-slate-200 p-3">
+      <div className="shrink-0 border-t border-slate-200 p-3">
 
         {/* =================================================
             VIEW WEBSITE
