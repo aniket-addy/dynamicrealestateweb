@@ -326,16 +326,13 @@ function DynamicTable({
     justify-center
     gap-2
     rounded-xl
-    border
-    border-slate-200
-    bg-white
+    bg-slate-950
     px-4
     text-sm
     font-medium
-    text-slate-700
+    text-white
     transition
-    hover:border-[#d6a84f]
-    hover:bg-[#fffaf0]
+    hover:bg-slate-800
   `;
 
   const addRowButton = `

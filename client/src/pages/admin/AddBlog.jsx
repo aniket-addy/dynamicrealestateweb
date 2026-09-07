@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../services/api";
 
 const AddBlog = () => {
   const navigate = useNavigate();
@@ -163,7 +164,7 @@ const AddBlog = () => {
       // API REQUEST
       // ======================================
       const response = await fetch(
-        "http://localhost:5000/api/blogs",
+        `${API_URL}/blogs`,
         {
           method: "POST",
           body: blogData,

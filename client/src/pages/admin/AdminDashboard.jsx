@@ -595,15 +595,6 @@ function AdminDashboard() {
 
                 <span
                   className="
-                    h-[3px]
-                    w-8
-                    rounded-full
-                    bg-[#d6a84f]
-                  "
-                />
-
-                <span
-                  className="
                     text-[9px]
                     font-extrabold
                     uppercase
@@ -1473,14 +1464,6 @@ function AdminDashboard() {
                 gap-2
               "
             >
-
-              <span
-                className="
-                  h-px
-                  w-6
-                  bg-[#d6a84f]
-                "
-              />
 
               <span
                 className="

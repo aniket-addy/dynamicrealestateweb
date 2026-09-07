@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../services/api";
 
 const EditBlog = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const EditBlog = () => {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/blogs/${id}`,
+          `${API_URL}/blogs/${id}`,
           {
             method: "GET",
             headers: {
@@ -270,7 +271,7 @@ const EditBlog = () => {
       // =================================================
 
       const response = await fetch(
-        `http://localhost:5000/api/blogs/${id}`,
+        `${API_URL}/blogs/${id}`,
         {
           method: "PUT",
           headers: {

@@ -10,8 +10,10 @@ import {
   Send,
   CheckCircle2,
 } from "lucide-react";
+import { API_URL as BASE_API_URL } from "../../services/api";
 
-const API_URL = "http://localhost:5000/api/leads";
+const API_URL = `${BASE_API_URL}/leads`;
+
 
 function EnquiryModal({
   isOpen,

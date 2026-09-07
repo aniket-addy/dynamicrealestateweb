@@ -11,6 +11,7 @@ import {
   Save,
   Trash2,
   Upload,
+  X,
 } from "lucide-react";
 
 import {
@@ -270,7 +271,18 @@ function AddAuthorityProject() {
       event.target.files || []
     );
 
-    setSelectedDocuments(files);
+    setSelectedDocuments((prev) => [
+      ...prev,
+      ...files,
+    ]);
+
+    event.target.value = "";
+  };
+
+  const removeSelectedDocument = (index) => {
+    setSelectedDocuments((prev) =>
+      prev.filter((_, i) => i !== index)
+    );
   };
 
   // =========================================================
@@ -1401,136 +1413,7 @@ function AddAuthorityProject() {
 
           </section>
 
-          {/* =================================================
-              PAYMENT PLANS
-          ================================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-
-            <div className="border-b border-slate-100 px-6 py-5">
-
-              <h2 className="text-base font-extrabold text-slate-900">
-                Payment Plans
-              </h2>
-
-            </div>
-
-            <div className="px-6 py-6">
-
-              <div className="grid gap-3 md:grid-cols-3">
-
-                <input
-                  name="name"
-                  value={
-                    paymentPlan.name
-                  }
-                  onChange={
-                    handlePaymentChange
-                  }
-                  placeholder="Plan name"
-                  className={inputClass}
-                />
-
-                <input
-                  type="number"
-                  name="percentage"
-                  value={
-                    paymentPlan.percentage
-                  }
-                  onChange={
-                    handlePaymentChange
-                  }
-                  placeholder="Percentage"
-                  min="0"
-                  max="100"
-                  className={inputClass}
-                />
-
-                <div className="flex gap-2">
-
-                  <input
-                    name="description"
-                    value={
-                      paymentPlan.description
-                    }
-                    onChange={
-                      handlePaymentChange
-                    }
-                    placeholder="Description"
-                    className={inputClass}
-                  />
-
-                  <button
-                    type="button"
-                    onClick={
-                      addPaymentPlan
-                    }
-                    className={smallButtonClass}
-                  >
-                    <Plus size={16} />
-                  </button>
-
-                </div>
-
-              </div>
-
-              {formData.paymentPlans.length > 0 && (
-                <div className="mt-5 space-y-2">
-
-                  {formData.paymentPlans.map(
-                    (plan, index) => (
-                      <div
-                        key={index}
-                        className="
-                          flex
-                          items-center
-                          justify-between
-                          rounded-xl
-                          border
-                          border-slate-100
-                          bg-slate-50
-                          px-4
-                          py-3
-                        "
-                      >
-
-                        <div>
-
-                          <p className="text-sm font-bold text-slate-800">
-                            {plan.name}
-                          </p>
-
-                          <p className="mt-0.5 text-xs text-slate-400">
-                            {plan.percentage}%
-
-                            {plan.description &&
-                              ` • ${plan.description}`}
-                          </p>
-
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            removePaymentPlan(
-                              index
-                            )
-                          }
-                          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-red-50 hover:text-red-600"
-                        >
-                          <Trash2 size={15} />
-                        </button>
-
-                      </div>
-                    )
-                  )}
-
-                </div>
-              )}
-
-            </div>
-
-          </section>
 
           {/* =================================================
               DOCUMENTS
@@ -1612,9 +1495,19 @@ function AddAuthorityProject() {
                           className="text-slate-400"
                         />
 
-                        <span className="text-xs font-semibold text-slate-600">
+                        <span className="flex-1 truncate text-xs font-semibold text-slate-600">
                           {file.name}
                         </span>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeSelectedDocument(index)
+                          }
+                          className="text-slate-400 hover:text-red-600"
+                        >
+                          <X size={14} />
+                        </button>
 
                       </div>
                     )
