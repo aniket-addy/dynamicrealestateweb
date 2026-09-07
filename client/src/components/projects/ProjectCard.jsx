@@ -78,6 +78,18 @@ function ProjectCard({ project }) {
         relative
         flex
         h-full
+
+        /* =====================================================
+           MOBILE / TABLET
+           EXACTLY ONE CARD WIDTH
+        ====================================================== */
+
+        w-full
+        min-w-0
+        max-w-full
+        shrink-0
+        snap-start
+
         cursor-pointer
         flex-col
         overflow-hidden
@@ -97,9 +109,16 @@ function ProjectCard({ project }) {
         hover:-translate-y-1
         hover:border-[#d6a84f]
         hover:shadow-[0_20px_50px_rgba(214,168,79,0.20)]
+
+        /* =====================================================
+           DESKTOP
+        ====================================================== */
+
+        md:w-auto
+        md:min-w-0
+        md:max-w-none
       "
     >
-
       {/* =====================================================
           IMAGE
       ===================================================== */}
@@ -115,7 +134,6 @@ function ProjectCard({ project }) {
           lg:h-[260px]
         "
       >
-
         {image ? (
           <img
             src={image}
@@ -151,9 +169,7 @@ function ProjectCard({ project }) {
           </div>
         )}
 
-        {/* =================================================
-            IMAGE OVERLAY
-        ================================================= */}
+        {/* IMAGE OVERLAY */}
 
         <div
           className="
@@ -170,9 +186,7 @@ function ProjectCard({ project }) {
           "
         />
 
-        {/* =================================================
-            PROJECT TYPE
-        ================================================= */}
+        {/* PROJECT TYPE */}
 
         <div
           className="
@@ -206,9 +220,7 @@ function ProjectCard({ project }) {
           {projectType}
         </div>
 
-        {/* =================================================
-            HEART
-        ================================================= */}
+        {/* HEART */}
 
         <button
           type="button"
@@ -249,9 +261,7 @@ function ProjectCard({ project }) {
           />
         </button>
 
-        {/* =================================================
-            LOCATION ON IMAGE
-        ================================================= */}
+        {/* LOCATION ON IMAGE */}
 
         <div
           className="
@@ -278,7 +288,6 @@ function ProjectCard({ project }) {
             {location}
           </span>
         </div>
-
       </div>
 
       {/* =====================================================
@@ -296,15 +305,9 @@ function ProjectCard({ project }) {
           p-5
 
           sm:p-6
-
-          transition-colors
-          duration-300
         "
       >
-
-        {/* =================================================
-            TITLE
-        ================================================= */}
+        {/* TITLE */}
 
         <h3
           className="
@@ -318,16 +321,12 @@ function ProjectCard({ project }) {
 
             transition-colors
             duration-300
-
-            group-hover:text-[#102b52]
           "
         >
           {title}
         </h3>
 
-        {/* =================================================
-            LOCATION
-        ================================================= */}
+        {/* LOCATION */}
 
         <div
           className="
@@ -358,9 +357,7 @@ function ProjectCard({ project }) {
           </span>
         </div>
 
-        {/* =================================================
-            META
-        ================================================= */}
+        {/* META */}
 
         {(area ||
           project?.bhkType ||
@@ -374,7 +371,6 @@ function ProjectCard({ project }) {
               gap-2
             "
           >
-
             {area && (
               <div
                 className="
@@ -432,13 +428,10 @@ function ProjectCard({ project }) {
                   project?.configuration}
               </div>
             )}
-
           </div>
         )}
 
-        {/* =================================================
-            DIVIDER
-        ================================================= */}
+        {/* DIVIDER */}
 
         <div
           className="
@@ -455,9 +448,7 @@ function ProjectCard({ project }) {
           "
         />
 
-        {/* =================================================
-            BOTTOM
-        ================================================= */}
+        {/* BOTTOM */}
 
         <div
           className="
@@ -470,13 +461,9 @@ function ProjectCard({ project }) {
             gap-4
           "
         >
-
-          {/* =================================================
-              PRICE
-          ================================================= */}
+          {/* PRICE */}
 
           <div>
-
             <p
               className="
                 text-[9px]
@@ -537,12 +524,9 @@ function ProjectCard({ project }) {
                 Price on Request
               </p>
             )}
-
           </div>
 
-          {/* =================================================
-              VIEW DETAILS
-          ================================================= */}
+          {/* VIEW DETAILS */}
 
           <button
             type="button"
@@ -594,11 +578,8 @@ function ProjectCard({ project }) {
               "
             />
           </button>
-
         </div>
-
       </div>
-
     </article>
   );
 }

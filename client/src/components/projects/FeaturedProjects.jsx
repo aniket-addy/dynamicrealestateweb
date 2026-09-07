@@ -44,15 +44,21 @@ function ProjectCard({ project }) {
     ? `/projects/${projectId}`
     : "#";
 
-
   return (
     <article
       className="
         group
+
         flex
         h-full
+        w-full
+        min-w-0
+
+        shrink-0
+
         flex-col
         overflow-hidden
+
         rounded-2xl
 
         border
@@ -81,7 +87,9 @@ function ProjectCard({ project }) {
         className="
           relative
           block
+
           aspect-[1.55/1]
+
           overflow-hidden
         "
       >
@@ -112,6 +120,7 @@ function ProjectCard({ project }) {
               flex
               h-full
               w-full
+
               items-center
               justify-center
 
@@ -140,7 +149,6 @@ function ProjectCard({ project }) {
 
         )}
 
-
         {/* =================================================
             IMAGE OVERLAY
         ================================================= */}
@@ -156,7 +164,6 @@ function ProjectCard({ project }) {
             to-transparent
           "
         />
-
 
         {/* =================================================
             CATEGORY
@@ -206,10 +213,8 @@ function ProjectCard({ project }) {
 
         )}
 
-
         {/* =================================================
             ARROW
-            Card ke andar wala View Project arrow same rahega
         ================================================= */}
 
         <div
@@ -276,12 +281,12 @@ function ProjectCard({ project }) {
             TITLE
         ================================================= */}
 
-        <Link
-          to={projectUrl}
-        >
+        <Link to={projectUrl}>
 
           <h3
             className="
+              line-clamp-1
+
               text-[16px]
               font-bold
               tracking-tight
@@ -382,9 +387,7 @@ function ProjectCard({ project }) {
           "
         >
 
-          {/* =================================================
-              TYPE
-          ================================================= */}
+          {/* TYPE */}
 
           <div
             className="
@@ -448,9 +451,7 @@ function ProjectCard({ project }) {
           </div>
 
 
-          {/* =================================================
-              PRICE
-          ================================================= */}
+          {/* PRICE */}
 
           {getProjectPrice(project) && (
 
@@ -655,9 +656,7 @@ function FeaturedProjects() {
 
         if (mounted) {
 
-          setProjects(
-            featured
-          );
+          setProjects(featured);
 
         }
 
@@ -849,15 +848,6 @@ function FeaturedProjects() {
 
               <span
                 className="
-                  h-px
-                  w-6
-
-                  bg-[#d6a84f]
-                "
-              />
-
-              <span
-                className="
                   text-[10px]
                   font-extrabold
                   uppercase
@@ -925,8 +915,8 @@ function FeaturedProjects() {
               VIEW ALL PROJECTS
           ================================================= */}
 
-         <Link
-  to="/projects/featured"
+          <Link
+            to="/projects/featured"
             className="
               group
 
@@ -980,57 +970,65 @@ function FeaturedProjects() {
 
 
         {/* =================================================
-            PROJECT CARDS
+            PROJECT CARDS CAROUSEL
         ================================================= */}
 
         <div
           className="
             relative
             mt-10
+
+            w-full
+            overflow-hidden
           "
         >
-
-          {/* 
-            Horizontal scrolling container.
-
-            lg:
-            4 cards visible at a time.
-
-            sm:
-            2 cards visible.
-
-            mobile:
-            1 card visible.
-
-            Any projects after the visible cards can be
-            accessed by horizontal scrolling.
-          */}
 
           <div
             className="
               flex
-              gap-5
-
-              overflow-x-auto
-              overflow-y-hidden
-
-              pb-5
-
-              scroll-smooth
+              w-full
 
               snap-x
               snap-mandatory
 
-              scrollbar-thin
-              scrollbar-thumb-slate-300
-              scrollbar-track-slate-100
+              overflow-x-auto
+              overflow-y-hidden
 
-              [&::-webkit-scrollbar]:h-2
-              [&::-webkit-scrollbar-track]:rounded-full
-              [&::-webkit-scrollbar-track]:bg-slate-100
-              [&::-webkit-scrollbar-thumb]:rounded-full
-              [&::-webkit-scrollbar-thumb]:bg-slate-300
-              [&::-webkit-scrollbar-thumb:hover]:bg-slate-400
+              scroll-smooth
+
+              overscroll-x-contain
+
+              /* ============================================
+                 MOBILE
+                 EXACTLY ONE CARD
+              ============================================ */
+
+              gap-0
+
+              pb-1
+
+              [-ms-overflow-style:none]
+              [scrollbar-width:none]
+              [&::-webkit-scrollbar]:hidden
+
+              /* ============================================
+                 TABLET
+                 TWO CARDS
+              ============================================ */
+
+              sm:gap-5
+              sm:pb-5
+
+              sm:[-ms-overflow-style:auto]
+              sm:[scrollbar-width:auto]
+              sm:[&::-webkit-scrollbar]:auto
+
+              /* ============================================
+                 DESKTOP
+                 FOUR CARDS
+              ============================================ */
+
+              lg:overflow-x-auto
             "
           >
 
@@ -1042,13 +1040,35 @@ function FeaturedProjects() {
                   project?.id
                 }
                 className="
-                  w-[85%]
+                  /* ========================================
+                     MOBILE
+                     FULL WIDTH = ONE CARD ONLY
+                  ======================================== */
+
+                  w-full
+                  min-w-full
+                  max-w-full
                   shrink-0
+
                   snap-start
 
+                  /* ========================================
+                     TABLET
+                     TWO CARDS
+                  ======================================== */
+
                   sm:w-[calc((100%-20px)/2)]
+                  sm:min-w-[calc((100%-20px)/2)]
+                  sm:max-w-[calc((100%-20px)/2)]
+
+                  /* ========================================
+                     DESKTOP
+                     FOUR CARDS
+                  ======================================== */
 
                   lg:w-[calc((100%-60px)/4)]
+                  lg:min-w-[calc((100%-60px)/4)]
+                  lg:max-w-[calc((100%-60px)/4)]
                 "
               >
 
@@ -1063,6 +1083,40 @@ function FeaturedProjects() {
           </div>
 
         </div>
+
+
+        {/* =================================================
+            MOBILE SWIPE HINT
+        ================================================= */}
+
+        {projects.length > 1 && (
+
+          <div
+            className="
+              mt-4
+
+              text-center
+
+              sm:hidden
+            "
+          >
+
+            <span
+              className="
+                text-[10px]
+                font-semibold
+                uppercase
+                tracking-[0.15em]
+
+                text-slate-400
+              "
+            >
+              Swipe to explore
+            </span>
+
+          </div>
+
+        )}
 
 
         {/* =================================================
@@ -1081,9 +1135,7 @@ function FeaturedProjects() {
           "
         >
 
-          {/* =================================================
-              AUTHORITY & BUILDER
-          ================================================= */}
+          {/* AUTHORITY & BUILDER */}
 
           <div
             className="
@@ -1166,9 +1218,7 @@ function FeaturedProjects() {
           </div>
 
 
-          {/* =================================================
-              PRIME LOCATIONS
-          ================================================= */}
+          {/* PRIME LOCATIONS */}
 
           <div
             className="
@@ -1251,9 +1301,7 @@ function FeaturedProjects() {
           </div>
 
 
-          {/* =================================================
-              PROPERTY TYPES
-          ================================================= */}
+          {/* PROPERTY TYPES */}
 
           <div
             className="

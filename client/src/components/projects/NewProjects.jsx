@@ -125,10 +125,15 @@ function NewProjectCard({ project }) {
       className="
         group
         relative
+
         flex
         h-full
+        w-full
+        min-w-0
+
         flex-col
         overflow-hidden
+
         rounded-2xl
 
         border
@@ -158,7 +163,9 @@ function NewProjectCard({ project }) {
         className="
           relative
           block
+
           h-[230px]
+
           overflow-hidden
 
           sm:h-[235px]
@@ -166,6 +173,7 @@ function NewProjectCard({ project }) {
       >
 
         {image ? (
+
           <img
             src={image}
             alt={title}
@@ -182,12 +190,15 @@ function NewProjectCard({ project }) {
               group-hover:scale-105
             "
           />
+
         ) : (
+
           <div
             className="
               flex
               h-full
               w-full
+
               items-center
               justify-center
 
@@ -199,6 +210,7 @@ function NewProjectCard({ project }) {
               group-hover:bg-[#fff9ed]
             "
           >
+
             <Building2
               size={42}
               className="
@@ -210,7 +222,9 @@ function NewProjectCard({ project }) {
                 group-hover:text-[#d6a84f]
               "
             />
+
           </div>
+
         )}
 
 
@@ -236,6 +250,7 @@ function NewProjectCard({ project }) {
         ================================================= */}
 
         {normalizedProject?.status && (
+
           <span
             className="
               absolute
@@ -267,6 +282,7 @@ function NewProjectCard({ project }) {
           >
             {normalizedProject.status}
           </span>
+
         )}
 
 
@@ -275,6 +291,7 @@ function NewProjectCard({ project }) {
         ================================================= */}
 
         {!normalizedProject?.status && type && (
+
           <span
             className="
               absolute
@@ -306,6 +323,7 @@ function NewProjectCard({ project }) {
           >
             {type}
           </span>
+
         )}
 
 
@@ -314,6 +332,7 @@ function NewProjectCard({ project }) {
         ================================================= */}
 
         {price && (
+
           <div
             className="
               absolute
@@ -321,6 +340,7 @@ function NewProjectCard({ project }) {
               left-3
             "
           >
+
             <p
               className="
                 text-[9px]
@@ -340,7 +360,9 @@ function NewProjectCard({ project }) {
             >
               {price}
             </p>
+
           </div>
+
         )}
 
       </Link>
@@ -373,6 +395,7 @@ function NewProjectCard({ project }) {
           to={projectUrl}
           onClick={handleClick}
         >
+
           <h3
             className="
               line-clamp-1
@@ -391,6 +414,7 @@ function NewProjectCard({ project }) {
           >
             {title}
           </h3>
+
         </Link>
 
 
@@ -399,6 +423,7 @@ function NewProjectCard({ project }) {
         ================================================= */}
 
         {location && (
+
           <div
             className="
               mt-2
@@ -408,6 +433,7 @@ function NewProjectCard({ project }) {
               gap-1.5
             "
           >
+
             <MapPin
               size={13}
               className="
@@ -435,7 +461,9 @@ function NewProjectCard({ project }) {
             >
               {location}
             </p>
+
           </div>
+
         )}
 
 
@@ -466,8 +494,10 @@ function NewProjectCard({ project }) {
           className="
             flex
             min-h-[24px]
+
             items-center
             justify-between
+
             gap-3
           "
         >
@@ -480,12 +510,14 @@ function NewProjectCard({ project }) {
             className="
               flex
               min-w-0
+
               items-center
               gap-1.5
             "
           >
 
             {isPlot ? (
+
               <Ruler
                 size={13}
                 className="
@@ -493,7 +525,9 @@ function NewProjectCard({ project }) {
                   text-[#b88b32]
                 "
               />
+
             ) : (
+
               <BedDouble
                 size={13}
                 className="
@@ -501,6 +535,7 @@ function NewProjectCard({ project }) {
                   text-[#b88b32]
                 "
               />
+
             )}
 
             <span
@@ -520,6 +555,7 @@ function NewProjectCard({ project }) {
             >
               {type || "Property"}
             </span>
+
           </div>
 
 
@@ -528,14 +564,17 @@ function NewProjectCard({ project }) {
           ================================================= */}
 
           {size ? (
+
             <div
               className="
                 flex
                 min-w-0
+
                 items-center
                 gap-1.5
               "
             >
+
               <Ruler
                 size={13}
                 className="
@@ -561,15 +600,20 @@ function NewProjectCard({ project }) {
               >
                 {size}
               </span>
+
             </div>
+
           ) : (
+
             price && (
+
               <div
                 className="
                   shrink-0
                   text-right
                 "
               >
+
                 <p
                   className="
                     text-[9px]
@@ -594,8 +638,11 @@ function NewProjectCard({ project }) {
                 >
                   {price}
                 </p>
+
               </div>
+
             )
+
           )}
 
         </div>
@@ -890,6 +937,7 @@ function NewProjects() {
   if (loading) {
 
     return (
+
       <section
         className="
           bg-white
@@ -903,6 +951,7 @@ function NewProjects() {
           className="
             mx-auto
             max-w-[1240px]
+
             px-4
             sm:px-6
             lg:px-8
@@ -922,15 +971,20 @@ function NewProjects() {
 
             {[1, 2, 3, 4].map(
               (item) => (
+
                 <div
                   key={item}
                   className="
                     h-[390px]
+
                     animate-pulse
+
                     rounded-2xl
+
                     bg-slate-100
                   "
                 />
+
               )
             )}
 
@@ -939,7 +993,9 @@ function NewProjects() {
         </div>
 
       </section>
+
     );
+
   }
 
 
@@ -966,9 +1022,11 @@ function NewProjects() {
   // =======================================================
 
   return (
+
     <section
       className="
         bg-white
+
         py-16
         sm:py-20
         lg:py-24
@@ -979,6 +1037,7 @@ function NewProjects() {
         className="
           mx-auto
           max-w-[1240px]
+
           px-4
           sm:px-6
           lg:px-8
@@ -1012,14 +1071,6 @@ function NewProjects() {
                 gap-2
               "
             >
-
-              <span
-                className="
-                  h-px
-                  w-7
-                  bg-[#d6a84f]
-                "
-              />
 
               <span
                 className="
@@ -1086,6 +1137,7 @@ function NewProjects() {
 
               inline-flex
               shrink-0
+
               items-center
               gap-2
 
@@ -1142,50 +1194,63 @@ function NewProjects() {
           className="
             relative
             mt-10
+
+            w-full
+            overflow-hidden
           "
         >
 
           {/* =================================================
-              HORIZONTAL PROJECT SCROLL
-              
-              Desktop:
-              4 cards visible
+              HORIZONTAL CAROUSEL
 
-              Tablet:
-              2 cards visible
+              MOBILE:
+              - EXACTLY 1 CARD
+              - FULL WIDTH
+              - NO NEXT CARD PEEK
+              - SWIPE TO NEXT
 
-              Mobile:
-              1 card mostly visible
+              TABLET:
+              - 2 CARDS
 
-              Extra projects:
-              Horizontal scrollbar / mouse wheel / swipe
+              DESKTOP:
+              - 4 CARDS
           ================================================= */}
 
           <div
             className="
               flex
-              gap-5
+              w-full
+
+              gap-0
 
               overflow-x-auto
               overflow-y-hidden
-
-              pb-5
 
               scroll-smooth
 
               snap-x
               snap-mandatory
 
-              scrollbar-thin
-              scrollbar-thumb-slate-300
-              scrollbar-track-slate-100
+              overscroll-x-contain
 
-              [&::-webkit-scrollbar]:h-2
-              [&::-webkit-scrollbar-track]:rounded-full
-              [&::-webkit-scrollbar-track]:bg-slate-100
-              [&::-webkit-scrollbar-thumb]:rounded-full
-              [&::-webkit-scrollbar-thumb]:bg-slate-300
-              [&::-webkit-scrollbar-thumb:hover]:bg-slate-400
+              pb-1
+
+              [-ms-overflow-style:none]
+              [scrollbar-width:none]
+              [&::-webkit-scrollbar]:hidden
+
+              sm:gap-5
+              sm:pb-5
+
+              sm:[-ms-overflow-style:auto]
+              sm:[scrollbar-width:auto]
+              sm:[&::-webkit-scrollbar]:auto
+
+              sm:[&::-webkit-scrollbar]:h-2
+              sm:[&::-webkit-scrollbar-track]:rounded-full
+              sm:[&::-webkit-scrollbar-track]:bg-slate-100
+              sm:[&::-webkit-scrollbar-thumb]:rounded-full
+              sm:[&::-webkit-scrollbar-thumb]:bg-slate-300
             "
           >
 
@@ -1194,13 +1259,36 @@ function NewProjects() {
               <div
                 key={getProjectId(project)}
                 className="
-                  w-[85%]
+                  /* =================================================
+                     MOBILE
+                     EXACTLY ONE CARD
+                  ================================================= */
+
+                  w-full
+                  min-w-full
+                  max-w-full
+
                   shrink-0
+
                   snap-start
 
+                  /* =================================================
+                     TABLET
+                     TWO CARDS
+                  ================================================= */
+
                   sm:w-[calc((100%-20px)/2)]
+                  sm:min-w-[calc((100%-20px)/2)]
+                  sm:max-w-[calc((100%-20px)/2)]
+
+                  /* =================================================
+                     DESKTOP
+                     FOUR CARDS
+                  ================================================= */
 
                   lg:w-[calc((100%-60px)/4)]
+                  lg:min-w-[calc((100%-60px)/4)]
+                  lg:max-w-[calc((100%-60px)/4)]
                 "
               >
 
@@ -1215,6 +1303,40 @@ function NewProjects() {
           </div>
 
         </div>
+
+
+        {/* =================================================
+            MOBILE SWIPE HINT
+        ================================================= */}
+
+        {projects.length > 1 && (
+
+          <div
+            className="
+              mt-4
+
+              text-center
+
+              sm:hidden
+            "
+          >
+
+            <span
+              className="
+                text-[10px]
+                font-semibold
+                uppercase
+                tracking-[0.15em]
+
+                text-slate-400
+              "
+            >
+              Swipe to explore
+            </span>
+
+          </div>
+
+        )}
 
 
         {/* =================================================
@@ -1255,6 +1377,7 @@ function NewProjects() {
 
               hover:border
               hover:border-[#ead6a8]
+
               hover:bg-[#fffaf0]
             "
           >
@@ -1339,6 +1462,7 @@ function NewProjects() {
 
               hover:border
               hover:border-[#ead6a8]
+
               hover:bg-[#fffaf0]
             "
           >
@@ -1423,6 +1547,7 @@ function NewProjects() {
 
               hover:border
               hover:border-[#ead6a8]
+
               hover:bg-[#fffaf0]
             "
           >

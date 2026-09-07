@@ -175,22 +175,17 @@ function Services() {
               <h1 className="text-4xl font-extrabold leading-[1.05] tracking-[-0.045em] text-white sm:text-5xl lg:text-7xl">
                 Real Estate
                 <br />
-
-                <span className="text-[#e0b65c]">
-                  Services
-                </span>
-
+                <span className="text-[#e0b65c]">Services</span>
                 <br />
-
                 Built Around You.
               </h1>
 
               {/* Description */}
 
               <p className="mt-6 max-w-[580px] text-sm leading-7 text-slate-300 sm:text-base">
-                From finding the right property to completing your
-                investment journey, Investorise provides end-to-end
-                real estate support designed around your requirements.
+                From finding the right property to completing your investment
+                journey, Investorise provides end-to-end real estate support
+                designed around your requirements.
               </p>
 
               {/* =================================================
@@ -220,7 +215,6 @@ function Services() {
                   "
                 >
                   Talk To Our Experts
-
                   <Phone size={15} />
                 </button>
 
@@ -249,7 +243,6 @@ function Services() {
                   "
                 >
                   <Phone size={15} />
-
                   Call Us Now
                 </button>
               </div>
@@ -287,16 +280,16 @@ function Services() {
 
               <div>
                 <p className="text-sm leading-7 text-slate-500 sm:text-base">
-                  Real estate decisions involve more than finding a
-                  property. Our services are designed to help you
-                  understand opportunities, compare projects and move
-                  forward with greater clarity.
+                  Real estate decisions involve more than finding a property.
+                  Our services are designed to help you understand
+                  opportunities, compare projects and move forward with greater
+                  clarity.
                 </p>
 
                 <p className="mt-4 text-sm leading-7 text-slate-500 sm:text-base">
-                  Whether you are buying your first property or looking
-                  for an investment opportunity, our team is here to
-                  support you throughout the journey.
+                  Whether you are buying your first property or looking for an
+                  investment opportunity, our team is here to support you
+                  throughout the journey.
                 </p>
               </div>
             </div>
@@ -322,14 +315,12 @@ function Services() {
 
               <h2 className="text-3xl font-extrabold tracking-[-0.035em] text-slate-900 sm:text-4xl">
                 Complete Real Estate
-                <span className="text-[#b88b32]">
-                  {" "}Support
-                </span>
+                <span className="text-[#b88b32]"> Support</span>
               </h2>
 
               <p className="mt-3 text-sm leading-6 text-slate-500">
-                Explore our services designed to make your property
-                journey simpler and more confident.
+                Explore our services designed to make your property journey
+                simpler and more confident.
               </p>
             </div>
 
@@ -398,10 +389,7 @@ function Services() {
 
                     <div className="mt-5 space-y-2.5">
                       {service.features.map((feature) => (
-                        <div
-                          key={feature}
-                          className="flex items-center gap-2"
-                        >
+                        <div key={feature} className="flex items-center gap-2">
                           <CheckCircle2
                             size={14}
                             className="shrink-0 text-[#b88b32]"
@@ -433,7 +421,6 @@ function Services() {
                         "
                       >
                         Get Assistance
-
                         <Phone
                           size={14}
                           className="
@@ -470,14 +457,12 @@ function Services() {
 
                 <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                   Looking For The Right
-                  <span className="text-[#e0b65c]">
-                    {" "}Property?
-                  </span>
+                  <span className="text-[#e0b65c]"> Property?</span>
                 </h2>
 
                 <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-400">
-                  Tell us what you are looking for and our team will
-                  help you explore the right opportunities.
+                  Tell us what you are looking for and our team will help you
+                  explore the right opportunities.
                 </p>
 
                 {/* CONTACT OUR TEAM */}
@@ -502,7 +487,6 @@ function Services() {
                   "
                 >
                   Contact Our Team
-
                   <Phone size={15} />
                 </button>
               </div>

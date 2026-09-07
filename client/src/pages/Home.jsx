@@ -6,16 +6,15 @@ import NewProjects from "../components/projects/NewProjects";
 
 import WhyChooseInvestorise from "../components/why-choose/WhyChooseInvestorise";
 import AboutCompany from "../components/about/AboutCompany";
-// import ServicesSection from "../components/services/ServicesSection";
 
-// import LifestyleSection from "../components/lifestyle/LifestyleSection";
-// import FeaturedProperties from "../components/property/FeaturedProperties";
+import ServicesSection from "../components/services/ServicesSection";
+import Testimonials from "../components/testimonials/Testimonials";
 
-// import Testimonials from "../components/testimonials/Testimonials";
 import ContactSection from "../components/contact/ContactSection";
 
 import FloatingActions from "../components/floating-actions/FloatingActions";
 import Footer from "../components/footer/Footer";
+import LatestBlogs from "../components/blogs/LatestBlogs";
 
 function Home() {
   return (
@@ -28,19 +27,17 @@ function Home() {
 
         <FeaturedProjects />
 
-        {/* <FeaturedProperties /> */}
-
         <NewProjects />
 
         <WhyChooseInvestorise />
 
         <AboutCompany />
 
-        {/* <ServicesSection /> */}
+        <ServicesSection />
 
-        {/* <LifestyleSection /> */}
+        <Testimonials />
 
-        {/* <Testimonials /> */}
+        <LatestBlogs/>
 
         <ContactSection />
       </main>

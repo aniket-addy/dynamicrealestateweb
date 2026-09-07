@@ -39,6 +39,43 @@ function Navbar() {
     location.pathname.startsWith("/builder-projects");
 
   // =========================================================
+  // LOGO CLICK
+  // =========================================================
+  // Agar already Home page par hain:
+  // directly top par scroll karega.
+  //
+  // Agar kisi aur page par hain:
+  // Home par navigate karega aur top par scroll karega.
+  // =========================================================
+
+  const handleLogoClick = (event) => {
+    event.preventDefault();
+
+    closeMobileMenu();
+
+    // Already Home page par
+    if (location.pathname === "/") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      return;
+    }
+
+    // Kisi aur page se Home par jao
+    navigate("/");
+
+    // React Router ke navigation ke baad top par le jao
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 50);
+  };
+
+  // =========================================================
   // CENTRAL CALL HANDLER
   // =========================================================
 
@@ -105,7 +142,7 @@ function Navbar() {
 
         <Link
           to="/"
-          onClick={closeMobileMenu}
+          onClick={handleLogoClick}
           className="
             group
             flex
@@ -333,9 +370,7 @@ function Navbar() {
                   shadow-slate-900/10
                 "
               >
-                {/* =================================================
-                    AUTHORITY PROJECTS
-                ================================================== */}
+                {/* Authority Projects */}
 
                 <Link
                   to="/authority-projects"
@@ -385,9 +420,7 @@ function Navbar() {
                   />
                 </Link>
 
-                {/* =================================================
-                    BUILDER PROJECTS
-                ================================================== */}
+                {/* Builder Projects */}
 
                 <Link
                   to="/builder-projects"
@@ -439,43 +472,6 @@ function Navbar() {
               </div>
             )}
           </div>
-
-          {/* =================================================
-              SERVICES
-          ================================================== */}
-
-          <Link
-            to="/services"
-            className={`
-              relative
-              py-7
-              text-[13px]
-              font-semibold
-              transition
-              ${
-                isActive("/services")
-                  ? "text-slate-900"
-                  : "text-slate-600 hover:text-slate-900"
-              }
-            `}
-          >
-            Services
-
-            {isActive("/services") && (
-              <span
-                className="
-                  absolute
-                  bottom-0
-                  left-1/2
-                  h-[2px]
-                  w-5
-                  -translate-x-1/2
-                  rounded-full
-                  bg-[#d6a84f]
-                "
-              />
-            )}
-          </Link>
 
           {/* =================================================
               ABOUT US
@@ -689,9 +685,7 @@ function Navbar() {
               sm:px-6
             "
           >
-            {/* =================================================
-                HOME
-            ================================================== */}
+            {/* Home */}
 
             <Link
               to="/"
@@ -710,9 +704,7 @@ function Navbar() {
               Home
             </Link>
 
-            {/* =================================================
-                MOBILE PROJECTS
-            ================================================== */}
+            {/* Mobile Projects */}
 
             <div className="border-b border-slate-100">
               <button
@@ -737,7 +729,7 @@ function Navbar() {
                 <span>Projects</span>
 
                 <ChevronDown
-                  size={16}
+                  size={14}
                   className={`
                     transition-transform
                     ${
@@ -759,8 +751,6 @@ function Navbar() {
                     pl-3
                   "
                 >
-                  {/* Authority Projects */}
-
                   <Link
                     to="/authority-projects"
                     onClick={closeMobileMenu}
@@ -778,8 +768,6 @@ function Navbar() {
                   >
                     Authority Projects
                   </Link>
-
-                  {/* Builder Projects */}
 
                   <Link
                     to="/builder-projects"
@@ -802,30 +790,7 @@ function Navbar() {
               )}
             </div>
 
-            {/* =================================================
-                SERVICES
-            ================================================== */}
-
-            <Link
-              to="/services"
-              onClick={closeMobileMenu}
-              className="
-                block
-                rounded-lg
-                px-3
-                py-3
-                text-sm
-                font-semibold
-                text-slate-800
-                hover:bg-slate-50
-              "
-            >
-              Services
-            </Link>
-
-            {/* =================================================
-                ABOUT US
-            ================================================== */}
+            {/* About */}
 
             <Link
               to="/about"
@@ -844,9 +809,7 @@ function Navbar() {
               About Us
             </Link>
 
-            {/* =================================================
-                BLOGS
-            ================================================== */}
+            {/* Blogs */}
 
             <Link
               to="/blogs"
@@ -865,9 +828,7 @@ function Navbar() {
               Blogs
             </Link>
 
-            {/* =================================================
-                CONTACT
-            ================================================== */}
+            {/* Contact */}
 
             <Link
               to="/contact"
@@ -886,9 +847,7 @@ function Navbar() {
               Contact
             </Link>
 
-            {/* =================================================
-                MOBILE CALL CTA
-            ================================================== */}
+            {/* Mobile Call */}
 
             <button
               type="button"
