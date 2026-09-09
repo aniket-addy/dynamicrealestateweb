@@ -4,8 +4,7 @@ import { ArrowLeft, CalendarDays, User } from "lucide-react";
 
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
-
-const API_URL = "http://localhost:5000";
+import { API_URL } from "../services/api";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -26,7 +25,7 @@ const BlogDetails = () => {
         setLoading(true);
         setError("");
 
-        const response = await fetch(`${API_URL}/api/blogs/${id}`);
+        const response = await fetch(`${API_URL}/blogs/${id}`);
         const data = await response.json();
 
         if (!response.ok) {

@@ -29,7 +29,7 @@ import {
   getProjectImage,
   getProjectPrice,
   getProjectType,
-} from "../utils/projectutils";
+} from "../utils/projectUtils";
 
 /*
 |--------------------------------------------------------------------------
@@ -734,8 +734,8 @@ function AuthorityProjects() {
 
       setError(
         err?.response?.data?.message ||
-          err?.message ||
-          "Unable to load authority projects."
+        err?.message ||
+        "Unable to load authority projects."
       );
 
       setProjects([]);
@@ -839,8 +839,8 @@ function AuthorityProjects() {
         const projectCategory =
           String(
             project?.projectCategory ||
-              project?.category ||
-              ""
+            project?.category ||
+            ""
           ).toLowerCase();
 
 
@@ -1863,10 +1863,10 @@ function AuthorityProjects() {
                     status !== "all" ||
                     authority !== "all") && (
 
-                    <button
-                      type="button"
-                      onClick={clearFilters}
-                      className="
+                      <button
+                        type="button"
+                        onClick={clearFilters}
+                        className="
                         mt-6
                         inline-flex
                         items-center
@@ -1881,15 +1881,15 @@ function AuthorityProjects() {
                         transition
                         hover:bg-[#e3bb67]
                       "
-                    >
+                      >
 
-                      Clear Filters
+                        Clear Filters
 
-                      <ArrowRight size={14} />
+                        <ArrowRight size={14} />
 
-                    </button>
+                      </button>
 
-                  )}
+                    )}
 
                 </div>
 

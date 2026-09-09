@@ -23,7 +23,7 @@ import {
   getProjectImage,
   getProjectPrice,
   getProjectType,
-} from "../../utils/projectutils";
+} from "../../utils/projectUtils";
 
 
 // =========================================================
@@ -613,8 +613,8 @@ function FeaturedProjects() {
           Array.isArray(authorityResponse)
             ? authorityResponse
             : authorityResponse?.data ||
-              authorityResponse?.projects ||
-              [];
+            authorityResponse?.projects ||
+            [];
 
 
         // =================================================
@@ -625,8 +625,8 @@ function FeaturedProjects() {
           Array.isArray(builderResponse)
             ? builderResponse
             : builderResponse?.data ||
-              builderResponse?.projects ||
-              [];
+            builderResponse?.projects ||
+            [];
 
 
         // =================================================

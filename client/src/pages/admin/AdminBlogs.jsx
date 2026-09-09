@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../services/api";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -48,7 +49,7 @@ const Blogs = () => {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/blogs"
+        `${API_URL}/blogs`
       );
 
       const data = await response.json();
@@ -96,7 +97,7 @@ const Blogs = () => {
       setDeleting(true);
 
       const response = await fetch(
-        `http://localhost:5000/api/blogs/${deleteId}`,
+        `${API_URL}/blogs/${deleteId}`,
         { method: "DELETE" }
       );
 

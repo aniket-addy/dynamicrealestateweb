@@ -1,4 +1,4 @@
-// src/utils/projectutils.js
+// src/utils/projectUtils.js
 
 /**
  * ============================================================
@@ -374,8 +374,8 @@ export function isInHomepageSection(
   const sections =
     normalizeSections(
       project?.homepageSections ||
-        project?.homeSections ||
-        project?.sections
+      project?.homeSections ||
+      project?.sections
     );
 
 

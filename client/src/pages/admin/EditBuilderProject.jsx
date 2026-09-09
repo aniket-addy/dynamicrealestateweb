@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import useBuilderProjects from "../../hooks/useBuilderProjects";
+import { uploadBuilderProjectDocuments } from "../../services/builderProjectService";
 
 import DynamicTable, {
   createEmptyProjectTable,
@@ -85,6 +86,9 @@ function EditBuilderProject() {
 
   const [galleryImageFiles, setGalleryImageFiles] = useState([]);
   const [galleryImagePreviews, setGalleryImagePreviews] = useState([]);
+
+  // Newly selected document files (to upload)
+  const [selectedDocuments, setSelectedDocuments] = useState([]);
 
   /* ============================================================
      FETCH PROJECT
@@ -552,6 +556,79 @@ function EditBuilderProject() {
   };
 
   /* ============================================================
+     DOCUMENT FILE SELECT (for upload)
+  ============================================================ */
+
+  const handleDocumentSelect = (event) => {
+    const files = Array.from(
+      event.target.files || []
+    );
+
+    setSelectedDocuments((prev) => [
+      ...prev,
+      ...files,
+    ]);
+
+    event.target.value = "";
+  };
+
+  const removeSelectedDocument = (index) => {
+    setSelectedDocuments((prev) =>
+      prev.filter((_, i) => i !== index)
+    );
+  };
+
+  const extractUploadedDocuments = (response) => {
+    const possibleDocuments = [
+      response?.documents,
+      response?.data?.documents,
+      response?.data?.data?.documents,
+      response?.result?.documents,
+      response?.result?.data?.documents,
+    ];
+
+    let documents = [];
+
+    for (const value of possibleDocuments) {
+      if (Array.isArray(value)) {
+        documents = value;
+        break;
+      }
+    }
+
+    return documents
+      .map((item) => {
+        if (typeof item === "string") {
+          return {
+            name:
+              item.split("/").pop() ||
+              "Document",
+            url: item,
+            type: "",
+          };
+        }
+
+        return {
+          name:
+            item?.name ||
+            item?.originalname ||
+            "Document",
+          url:
+            item?.url ||
+            item?.secure_url ||
+            item?.path ||
+            item?.location ||
+            "",
+          type:
+            item?.type ||
+            item?.mimetype ||
+            "",
+        };
+      })
+      .filter((item) => item.url);
+  };
+
+  /* ============================================================
      CUSTOM TABLE
   ============================================================ */
 
@@ -584,6 +661,49 @@ function EditBuilderProject() {
     try {
       setSaving(true);
 
+      // =====================================================
+      // UPLOAD NEW DOCUMENTS (if any selected)
+      // =====================================================
+
+      let uploadedDocuments = [];
+
+      if (selectedDocuments.length > 0) {
+        const documentFormData = new FormData();
+
+        selectedDocuments.forEach((file) => {
+          documentFormData.append("documents", file);
+        });
+
+        try {
+          const documentResponse =
+            await uploadBuilderProjectDocuments(
+              documentFormData
+            );
+
+          uploadedDocuments =
+            extractUploadedDocuments(documentResponse);
+        } catch (uploadError) {
+          console.error(
+            "Document upload error:",
+            uploadError
+          );
+
+          alert(
+            uploadError?.response?.data?.message ||
+              uploadError?.message ||
+              "Failed to upload documents."
+          );
+          setSaving(false);
+          return;
+        }
+      }
+
+      // Merge existing + newly uploaded documents
+      const finalDocuments = [
+        ...form.documents,
+        ...uploadedDocuments,
+      ];
+
       const payload = {
         ...form,
 
@@ -597,81 +717,32 @@ function EditBuilderProject() {
             ? 0
             : Number(form.priceFrom),
 
-        /*
-         * Existing Cloudinary main image
-         */
         image: form.image,
-
-        /*
-         * Existing Cloudinary gallery images
-         */
         images: form.images.filter(Boolean),
+        mainImageFile,
+        galleryImageFiles,
 
-        /*
-         * New image files
-         */
-        mainImageFile:
-          mainImageFile,
+        features: form.features.filter(Boolean),
+        amenities: form.amenities.filter(Boolean),
 
-        galleryImageFiles:
-          galleryImageFiles,
-
-        /*
-         * Features
-         */
-        features:
-          form.features.filter(Boolean),
-
-        /*
-         * Amenities
-         */
-        amenities:
-          form.amenities.filter(Boolean),
-
-        /*
-         * Payment Plans
-         */
         paymentPlans:
           form.paymentPlans.map(
             (plan) => ({
-              name:
-                plan.name || "",
-
-              percentage:
-                Number(
-                  plan.percentage
-                ) || 0,
-
-              description:
-                plan.description || "",
+              name: plan.name || "",
+              percentage: Number(plan.percentage) || 0,
+              description: plan.description || "",
             })
           ),
 
-        /*
-         * Documents
-         */
-        documents:
-          form.documents.map(
-            (document) => ({
-              name:
-                document.name || "",
+        documents: finalDocuments.map(
+          (document) => ({
+            name: document.name || "",
+            url: document.url || "",
+            type: document.type || "",
+          })
+        ),
 
-              url:
-                document.url || "",
-
-              type:
-                document.type || "",
-            })
-          ),
-
-        /*
-         * CUSTOM DYNAMIC TABLE
-         *
-         * Existing table + edited table
-         * will be saved to MongoDB.
-         */
-        customTable:
-          form.customTable,
+        customTable: form.customTable,
       };
 
       await editProject(
@@ -1606,116 +1677,7 @@ function EditBuilderProject() {
 
         </section>
 
-        {/* ======================================================
-            PAYMENT PLANS
-        ====================================================== */}
 
-        <section className="rounded-xl border border-gray-200 bg-white p-5">
-
-          <div className="flex items-center justify-between">
-
-            <div>
-
-              <h2 className="text-lg font-semibold text-gray-900">
-                Payment Plans
-              </h2>
-
-              <p className="mt-1 text-sm text-gray-500">
-                Add payment plan details.
-              </p>
-
-            </div>
-
-            <button
-              type="button"
-              onClick={addPaymentPlan}
-              className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium hover:bg-gray-50"
-            >
-              <Plus size={16} />
-              Add Plan
-            </button>
-
-          </div>
-
-          <div className="mt-5 space-y-4">
-
-            {form.paymentPlans.map(
-              (plan, index) => (
-
-                <div
-                  key={index}
-                  className="rounded-lg border border-gray-200 p-4"
-                >
-
-                  <div className="grid gap-4 md:grid-cols-[1fr_180px_auto]">
-
-                    <input
-                      value={plan.name}
-                      onChange={(e) =>
-                        updatePaymentPlan(
-                          index,
-                          "name",
-                          e.target.value
-                        )
-                      }
-                      placeholder="Plan name"
-                      className="h-11 rounded-lg border border-gray-200 px-3 text-sm outline-none"
-                    />
-
-                    <input
-                      type="number"
-                      value={
-                        plan.percentage
-                      }
-                      onChange={(e) =>
-                        updatePaymentPlan(
-                          index,
-                          "percentage",
-                          e.target.value
-                        )
-                      }
-                      placeholder="Percentage"
-                      className="h-11 rounded-lg border border-gray-200 px-3 text-sm outline-none"
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        removePaymentPlan(
-                          index
-                        )
-                      }
-                      className="rounded-lg border border-gray-200 px-3 text-red-600 hover:bg-red-50"
-                    >
-                      <Trash2 size={17} />
-                    </button>
-
-                  </div>
-
-                  <textarea
-                    value={
-                      plan.description
-                    }
-                    onChange={(e) =>
-                      updatePaymentPlan(
-                        index,
-                        "description",
-                        e.target.value
-                      )
-                    }
-                    rows={3}
-                    placeholder="Plan description"
-                    className="mt-3 w-full rounded-lg border border-gray-200 px-3 py-3 text-sm outline-none"
-                  />
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-        </section>
 
         {/* ======================================================
             DOCUMENTS
@@ -1758,6 +1720,98 @@ function EditBuilderProject() {
           </div>
 
           <div className="mt-5 space-y-4">
+
+            {/* ---- FILE UPLOAD SELECTOR ---- */}
+
+            <label
+              className="
+                flex
+                cursor-pointer
+                items-center
+                gap-4
+                rounded-xl
+                border
+                border-dashed
+                border-gray-200
+                bg-gray-50
+                p-5
+                transition
+                hover:border-gray-400
+              "
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-gray-400">
+                <FileText size={20} />
+              </div>
+
+              <div>
+                <p className="text-sm font-bold text-gray-700">
+                  Upload documents
+                </p>
+
+                <p className="mt-1 text-xs text-gray-400">
+                  PDF, DOC, DOCX and other project documents.
+                </p>
+              </div>
+
+              <Upload
+                size={17}
+                className="ml-auto text-gray-400"
+              />
+
+              <input
+                type="file"
+                multiple
+                onChange={handleDocumentSelect}
+                className="hidden"
+              />
+            </label>
+
+            {/* ---- SELECTED (pending upload) FILES ---- */}
+
+            {selectedDocuments.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-[11px] font-semibold text-gray-500">
+                  Selected for upload ({selectedDocuments.length})
+                </p>
+
+                {selectedDocuments.map(
+                  (file, index) => (
+                    <div
+                      key={`${file.name}-${index}`}
+                      className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2"
+                    >
+                      <FileText
+                        size={15}
+                        className="shrink-0 text-gray-400"
+                      />
+
+                      <span className="flex-1 truncate text-xs font-semibold text-gray-600">
+                        {file.name}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          removeSelectedDocument(index)
+                        }
+                        className="text-gray-400 hover:text-red-600"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+
+            {/* ---- EXISTING DOCUMENTS (editable fields) ---- */}
+
+            {form.documents.length === 0 &&
+              selectedDocuments.length === 0 && (
+                <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 py-8 text-center text-xs text-gray-400">
+                  No documents added.
+                </div>
+              )}
 
             {form.documents.map(
               (document, index) => (

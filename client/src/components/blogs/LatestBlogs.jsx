@@ -3,6 +3,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../services/api";
 
 function LatestBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -20,7 +21,7 @@ function LatestBlogs() {
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/blogs"
+          `${API_URL}/blogs`
         );
 
         const data = await response.json();

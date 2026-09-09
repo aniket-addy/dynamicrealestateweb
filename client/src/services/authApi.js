@@ -1,5 +1,4 @@
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  `http://${window.location.hostname}:5000/api`;
+import { API_URL } from "./api";
 
 export default API_URL;
+

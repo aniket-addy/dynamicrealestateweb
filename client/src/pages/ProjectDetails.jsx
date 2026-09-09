@@ -35,6 +35,7 @@ import Footer from "../components/footer/Footer";
 // =========================================================
  
 import { callClient } from "../components/config/contact";
+import { API_URL } from "../services/api";
  
 /*
 |--------------------------------------------------------------------------
@@ -143,7 +144,7 @@ function ProjectDetails() {
         // =====================================================
  
         response = await fetch(
-          `http://localhost:5000/api/authority-projects/${id}`
+          `${API_URL}/authority-projects/${id}`
         );
  
         if (response.ok) {
@@ -175,7 +176,7 @@ function ProjectDetails() {
         // =====================================================
  
         response = await fetch(
-          `http://localhost:5000/api/builder-projects/${id}`
+          `${API_URL}/builder-projects/${id}`
         );
  
         if (response.ok) {
@@ -207,7 +208,7 @@ function ProjectDetails() {
         // =====================================================
  
         response = await fetch(
-          `http://localhost:5000/api/projects/${id}`
+          `${API_URL}/projects/${id}`
         );
  
         if (response.ok) {

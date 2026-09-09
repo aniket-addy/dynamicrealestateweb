@@ -24,7 +24,7 @@ import {
   getProjectPrice,
   getProjectType,
   normalizeProject,
-} from "../../utils/projectutils";
+} from "../../utils/projectUtils";
 
 
 // =========================================================
@@ -768,8 +768,8 @@ function NewProjects() {
           Array.isArray(authorityResponse)
             ? authorityResponse
             : authorityResponse?.data ||
-              authorityResponse?.projects ||
-              [];
+            authorityResponse?.projects ||
+            [];
 
 
         // =================================================
@@ -780,8 +780,8 @@ function NewProjects() {
           Array.isArray(builderResponse)
             ? builderResponse
             : builderResponse?.data ||
-              builderResponse?.projects ||
-              [];
+            builderResponse?.projects ||
+            [];
 
 
         // =================================================

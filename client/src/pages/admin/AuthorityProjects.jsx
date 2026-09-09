@@ -228,7 +228,7 @@ function AuthorityProjects() {
     if (!id) return;
 
     navigate(
-      `/admin/authority-projects/view/${id}`
+      `/authority-projects/${id}`
     );
   };
 
