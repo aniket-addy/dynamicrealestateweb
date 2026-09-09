@@ -77,11 +77,13 @@ function WhyChooseInvestorise() {
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
 
         {/* Soft glow */}
+
         <div className="absolute -left-32 top-10 h-72 w-72 rounded-full bg-[#f3ead8]/50 blur-3xl" />
 
         <div className="absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-[#f5eee2]/60 blur-3xl" />
 
         {/* Architectural line pattern */}
+
         <div className="absolute right-[-20px] top-16 hidden opacity-[0.12] lg:block">
           <div className="flex items-end gap-3">
             <div className="h-40 w-10 border border-[#b88b32]" />
@@ -91,7 +93,7 @@ function WhyChooseInvestorise() {
           </div>
         </div>
 
-        <div className="absolute left-[-40px] bottom-10 hidden opacity-[0.08] lg:block">
+        <div className="absolute bottom-10 left-[-40px] hidden opacity-[0.08] lg:block">
           <div className="h-44 w-44 rotate-45 border border-[#b88b32]" />
         </div>
       </div>
@@ -152,7 +154,24 @@ function WhyChooseInvestorise() {
             return (
               <div
                 key={point.id}
-                className="group relative overflow-hidden rounded-[20px] border border-[#eee9df] bg-white px-6 py-7 text-center shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-all duration-500 hover:-translate-y-2 hover:border-[#d9bd88] hover:shadow-[0_20px_45px_rgba(15,23,42,0.10)]"
+                className="
+                  group
+                  relative
+                  overflow-hidden
+                  rounded-[20px]
+                  border
+                  border-[#eee9df]
+                  bg-white
+                  px-6
+                  py-7
+                  text-center
+                  shadow-[0_8px_30px_rgba(15,23,42,0.05)]
+                  transition-all
+                  duration-500
+                  hover:-translate-y-2
+                  hover:border-[#d9bd88]
+                  hover:shadow-[0_20px_45px_rgba(15,23,42,0.10)]
+                "
               >
 
                 {/* =================================================
@@ -171,21 +190,52 @@ function WhyChooseInvestorise() {
                     ICON
                 ================================================== */}
 
-                <div className="mx-auto flex h-[68px] w-[68px] items-center justify-center rounded-full border border-[#eadfc9] bg-[#fbf7ef] transition-all duration-500 group-hover:scale-105 group-hover:border-[#c99b52] group-hover:bg-[#f8efdf]">
-
+                <div
+                  className="
+                    mx-auto
+                    flex
+                    h-[68px]
+                    w-[68px]
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-[#eadfc9]
+                    bg-[#fbf7ef]
+                    transition-all
+                    duration-500
+                    group-hover:scale-105
+                    group-hover:border-[#c99b52]
+                    group-hover:bg-[#f8efdf]
+                  "
+                >
                   <Icon
                     size={29}
                     strokeWidth={1.7}
-                    className="text-[#17243d] transition-all duration-300 group-hover:text-[#b88b32]"
+                    className="
+                      text-[#17243d]
+                      transition-all
+                      duration-300
+                      group-hover:text-[#b88b32]
+                    "
                   />
-
                 </div>
 
                 {/* =================================================
                     TITLE
                 ================================================== */}
 
-                <h3 className="mt-6 min-h-[24px] text-[15px] font-extrabold tracking-[-0.01em] text-[#0d1d3b] sm:text-[16px]">
+                <h3
+                  className="
+                    mt-6
+                    min-h-[24px]
+                    text-[15px]
+                    font-extrabold
+                    tracking-[-0.01em]
+                    text-[#0d1d3b]
+                    sm:text-[16px]
+                  "
+                >
                   {point.title}
                 </h3>
 
@@ -193,24 +243,54 @@ function WhyChooseInvestorise() {
                     DESCRIPTION
                 ================================================== */}
 
-                <p className="mx-auto mt-3 min-h-[72px] max-w-[220px] text-[12px] leading-[1.65] text-slate-500">
+                <p
+                  className="
+                    mx-auto
+                    mt-3
+                    min-h-[72px]
+                    max-w-[220px]
+                    text-[12px]
+                    leading-[1.65]
+                    text-slate-500
+                  "
+                >
                   {point.description}
                 </p>
 
                 {/* =================================================
                     ARROW
+                    MOBILE: HIDDEN
+                    TABLET/DESKTOP: VISIBLE
                 ================================================== */}
 
-                <div className="mt-5 flex justify-center">
+                <div className="mt-5 hidden justify-center sm:flex">
 
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c99b52] bg-white transition-all duration-300 group-hover:bg-[#b88b32]">
-
+                  <div
+                    className="
+                      flex
+                      h-10
+                      w-10
+                      items-center
+                      justify-center
+                      rounded-full
+                      border
+                      border-[#c99b52]
+                      bg-white
+                      transition-all
+                      duration-300
+                      group-hover:bg-[#b88b32]
+                    "
+                  >
                     <ArrowRight
                       size={17}
                       strokeWidth={1.8}
-                      className="text-[#17243d] transition-colors duration-300 group-hover:text-white"
+                      className="
+                        text-[#17243d]
+                        transition-colors
+                        duration-300
+                        group-hover:text-white
+                      "
                     />
-
                   </div>
 
                 </div>
@@ -219,7 +299,20 @@ function WhyChooseInvestorise() {
                     BOTTOM HOVER LINE
                 ================================================== */}
 
-                <span className="absolute bottom-0 left-1/2 h-[3px] w-0 -translate-x-1/2 bg-[#c59645] transition-all duration-500 group-hover:w-20" />
+                <span
+                  className="
+                    absolute
+                    bottom-0
+                    left-1/2
+                    h-[3px]
+                    w-0
+                    -translate-x-1/2
+                    bg-[#c59645]
+                    transition-all
+                    duration-500
+                    group-hover:w-20
+                  "
+                />
 
               </div>
             );
@@ -236,11 +329,29 @@ function WhyChooseInvestorise() {
           {/* Decorative background */}
 
           <div className="pointer-events-none absolute right-0 top-0 h-full w-1/3 opacity-[0.08]">
+
             <div className="absolute right-8 top-[-30px] h-48 w-48 rounded-full border-[20px] border-[#b88b32]" />
+
             <div className="absolute right-24 top-10 h-32 w-32 rounded-full border border-[#b88b32]" />
+
           </div>
 
-          <div className="relative flex flex-col gap-6 px-5 py-6 sm:px-7 lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-5">
+          <div
+            className="
+              relative
+              flex
+              flex-col
+              gap-6
+              px-5
+              py-6
+              sm:px-7
+              lg:flex-row
+              lg:items-center
+              lg:justify-between
+              lg:px-8
+              lg:py-5
+            "
+          >
 
             {/* =================================================
                 LEFT CONTENT
@@ -248,14 +359,24 @@ function WhyChooseInvestorise() {
 
             <div className="flex items-center gap-4">
 
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white shadow-[0_5px_18px_rgba(15,23,42,0.08)]">
-
+              <div
+                className="
+                  flex
+                  h-12
+                  w-12
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-white
+                  shadow-[0_5px_18px_rgba(15,23,42,0.08)]
+                "
+              >
                 <ShieldCheck
                   size={22}
                   strokeWidth={1.8}
                   className="text-[#b88b32]"
                 />
-
               </div>
 
               <div>
@@ -289,12 +410,15 @@ function WhyChooseInvestorise() {
                 />
 
                 <div>
+
                   <p className="text-[11px] font-bold text-slate-800">
                     Trusted Advice
                   </p>
+
                   <p className="mt-0.5 text-[9px] text-slate-500">
                     Expert guidance
                   </p>
+
                 </div>
 
               </div>
@@ -312,12 +436,15 @@ function WhyChooseInvestorise() {
                 />
 
                 <div>
+
                   <p className="text-[11px] font-bold text-slate-800">
                     Personalized Support
                   </p>
+
                   <p className="mt-0.5 text-[9px] text-slate-500">
                     At every step
                   </p>
+
                 </div>
 
               </div>
@@ -335,12 +462,15 @@ function WhyChooseInvestorise() {
                 />
 
                 <div>
+
                   <p className="text-[11px] font-bold text-slate-800">
                     Better Opportunities
                   </p>
+
                   <p className="mt-0.5 text-[9px] text-slate-500">
                     Growth-focused
                   </p>
+
                 </div>
 
               </div>
@@ -354,7 +484,29 @@ function WhyChooseInvestorise() {
             <button
               type="button"
               onClick={handleExpertCall}
-              className="group inline-flex w-full shrink-0 items-center justify-center gap-3 rounded-xl bg-[#0d1d3b] px-6 py-3.5 text-sm font-bold text-white shadow-[0_8px_20px_rgba(13,29,59,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#162b50] hover:shadow-[0_12px_25px_rgba(13,29,59,0.22)] sm:w-auto"
+              className="
+                group
+                inline-flex
+                w-full
+                shrink-0
+                items-center
+                justify-center
+                gap-3
+                rounded-xl
+                bg-[#0d1d3b]
+                px-6
+                py-3.5
+                text-sm
+                font-bold
+                text-white
+                shadow-[0_8px_20px_rgba(13,29,59,0.15)]
+                transition-all
+                duration-300
+                hover:-translate-y-0.5
+                hover:bg-[#162b50]
+                hover:shadow-[0_12px_25px_rgba(13,29,59,0.22)]
+                sm:w-auto
+              "
             >
 
               <Phone
@@ -370,7 +522,11 @@ function WhyChooseInvestorise() {
               <ArrowRight
                 size={17}
                 strokeWidth={2}
-                className="transition-transform duration-300 group-hover:translate-x-1"
+                className="
+                  transition-transform
+                  duration-300
+                  group-hover:translate-x-1
+                "
               />
 
             </button>
