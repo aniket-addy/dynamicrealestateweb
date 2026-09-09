@@ -10,7 +10,7 @@ const {
 
 const {
   uploadBlogImage,
-} = require("../middleware/Upload");
+} = require("../middleware/upload");
 
 const router = express.Router();
 
