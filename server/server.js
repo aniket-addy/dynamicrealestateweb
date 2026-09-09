@@ -42,6 +42,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:3000",
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
@@ -60,7 +61,14 @@ connectDB();
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) return callback(null, true);
+
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        (process.env.NODE_ENV !== "production" && origin.includes("localhost"));
+
+      if (isAllowed) {
         return callback(null, true);
       }
 
@@ -71,6 +79,17 @@ app.use(
     credentials: true,
   })
 );
+
+// Database middleware ensuring connection in serverless environments
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 
 // =========================================================
@@ -235,11 +254,15 @@ app.use(
 const PORT =
   process.env.PORT || 5000;
 
-app.listen(
-  PORT,
-  () => {
-    console.log(
-      `Server running on http://localhost:${PORT}`
-    );
-  }
-);
+if (!process.env.VERCEL) {
+  app.listen(
+    PORT,
+    () => {
+      console.log(
+        `Server running on http://localhost:${PORT}`
+      );
+    }
+  );
+}
+
+module.exports = app;

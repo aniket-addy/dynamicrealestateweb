@@ -2,34 +2,53 @@ const mongoose = require("mongoose");
 
 /*
 |--------------------------------------------------------------------------
-| MONGODB CONNECTION
+| MONGODB CONNECTION (Serverless & Standard Server Compatible)
 |--------------------------------------------------------------------------
 */
 
+let cachedPromise = null;
+
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return mongoose.connection;
+  }
+
+  if (cachedPromise) {
+    return cachedPromise;
+  }
+
   try {
     const mongoURI = process.env.MONGO_URI;
 
     if (!mongoURI) {
       throw new Error(
-        "MONGO_URI is missing in .env file"
+        "MONGO_URI is missing in environment variables"
       );
     }
 
-    const connection =
-      await mongoose.connect(mongoURI);
+    cachedPromise = mongoose.connect(mongoURI);
+
+    const connection = await cachedPromise;
 
     console.log(
       `MongoDB Connected: ${connection.connection.host}`
     );
+
+    return connection;
   } catch (error) {
+    cachedPromise = null;
+
     console.error(
       "MongoDB Connection Error:",
       error.message
     );
 
-    process.exit(1);
+    if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
+      process.exit(1);
+    }
+
+    throw error;
   }
 };
 
-module.exports = connectDB;
+module.exports = connectDB;
