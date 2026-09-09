@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Clock3,
   Download,
   FileText,
@@ -65,6 +66,26 @@ function ProjectDetails() {
  
   const [activeImage, setActiveImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  // =========================================================
+  // MOBILE ACCORDIONS
+  // =========================================================
+  // Desktop par Project Details / Features / Amenities
+  // hamesha expanded rahenge. Mobile par dropdown rahenge.
+  // =========================================================
+
+  const [mobileSections, setMobileSections] = useState({
+    details: false,
+    features: false,
+    amenities: false,
+  });
+
+  const toggleMobileSection = (section) => {
+    setMobileSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
  
   // =========================================================
   // ENQUIRE NOW
@@ -405,7 +426,7 @@ function ProjectDetails() {
           </div>
         </div>
  
-        <Footer />
+        <div className="w-full min-w-0 max-w-full overflow-hidden"><Footer /></div>
       </div>
     );
   }
@@ -440,13 +461,22 @@ function ProjectDetails() {
   // =========================================================
  
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen w-full min-w-0 max-w-full overflow-x-hidden bg-[#f8fafc]">
  
       {/* =====================================================
           NAVBAR
       ====================================================== */}
  
-      <div className="sticky top-0 z-[100] bg-white">
+      <div
+        className="
+          sticky
+          top-0
+          z-[100]
+          w-full
+          bg-white
+          shadow-[0_1px_12px_rgba(15,23,42,0.05)]
+        "
+      >
         <Navbar />
       </div>
  
@@ -476,16 +506,16 @@ function ProjectDetails() {
         </div>
       </div>
  
-      <main>
+      <main className="w-full min-w-0 max-w-full overflow-x-hidden">
  
         {/* ===================================================
             HERO
         ==================================================== */}
  
         <section className="bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
+          <div className="mx-auto w-full min-w-0 max-w-7xl px-4 py-6 sm:px-5 sm:py-8 lg:px-8 lg:py-10">
  
-            <div className="grid gap-7 lg:grid-cols-[1.45fr_0.75fr]">
+            <div className="grid min-w-0 gap-7 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.75fr)]">
  
               {/* IMAGE */}
  
@@ -653,7 +683,7 @@ function ProjectDetails() {
  
               {/* PROJECT INFO */}
  
-              <div className="flex flex-col justify-center">
+              <div className="flex min-w-0 flex-col justify-center">
  
                 <div className="mb-4 flex flex-wrap gap-2">
  
@@ -678,7 +708,7 @@ function ProjectDetails() {
                   )}
                 </div>
  
-                <h1 className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+                <h1 className="break-words text-3xl font-black tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
                   {project.name}
                 </h1>
  
@@ -689,7 +719,7 @@ function ProjectDetails() {
                       className="mt-0.5 shrink-0 text-[#b88b32]"
                     />
  
-                    <span>
+                    <span className="min-w-0 break-words">
                       {locationText}
                     </span>
                   </div>
@@ -710,7 +740,7 @@ function ProjectDetails() {
                       />
                     )}
  
-                    <span className="text-2xl font-black text-slate-950">
+                    <span className="min-w-0 break-words text-2xl font-black text-slate-950">
                       {project.price ||
                         formatPrice(
                           project.priceFrom
@@ -722,7 +752,7 @@ function ProjectDetails() {
  
                 {/* CTA */}
  
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <div className="mt-6 grid min-w-0 gap-2.5 sm:grid-cols-2 sm:gap-3">
  
                   {/* =========================================
                       ENQUIRE NOW
@@ -834,17 +864,17 @@ function ProjectDetails() {
             CONTENT
         ==================================================== */}
  
-        <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-14">
+        <div className="mx-auto w-full min-w-0 max-w-7xl px-3 py-5 sm:px-5 sm:py-10 lg:px-8 lg:py-14">
  
-          <div className="grid gap-7 lg:grid-cols-[1fr_340px]">
+          <div className="grid min-w-0 gap-5 sm:gap-7 lg:grid-cols-[minmax(0,1fr)_340px]">
  
             {/* LEFT CONTENT */}
  
-            <div className="space-y-7">
+            <div className="min-w-0 space-y-5 sm:space-y-7">
  
               {/* OVERVIEW */}
  
-              <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <section className="w-full min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
  
                 <SectionTitle
                   icon={<Building2 size={19} />}
@@ -852,7 +882,7 @@ function ProjectDetails() {
                 />
  
                 {project.description ? (
-                  <p className="mt-5 whitespace-pre-line text-sm leading-7 text-slate-600">
+                  <p className="mt-5 break-words [overflow-wrap:anywhere] whitespace-pre-line text-sm leading-7 text-slate-600">
                     {project.description}
                   </p>
                 ) : (
@@ -861,152 +891,199 @@ function ProjectDetails() {
  
               </section>
  
-              {/* PROJECT DETAILS */}
- 
-              <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
- 
-                <SectionTitle
+              {/* =================================================
+                  PROJECT DETAILS — MOBILE ACCORDION
+              ================================================== */}
+
+              <section
+                className="
+                  overflow-hidden
+                  rounded-2xl
+                  border
+                  border-slate-200
+                  bg-white
+                  shadow-sm
+                  sm:rounded-3xl
+                  sm:p-8
+                "
+              >
+                <MobileAccordionHeader
                   icon={<BadgeCheck size={19} />}
                   title="Project Details"
+                  open={mobileSections.details}
+                  onClick={() => toggleMobileSection("details")}
                 />
- 
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
- 
-                  <DetailItem
-                    label="Project Name"
-                    value={project.name}
-                  />
- 
-                  {/* DEVELOPER — Builder Projects */}
-                  <DetailItem
-                    label="Developer / Builder"
-                    value={project.developer}
-                  />
- 
-                  <DetailItem
-                    label="Authority"
-                    value={project.authority}
-                  />
- 
-                  <DetailItem
-                    label="Category"
-                    value={categoryLabel}
-                  />
- 
-                  <DetailItem
-                    label="Status"
-                    value={statusLabel}
-                  />
- 
-                  <DetailItem
-                    label="Location"
-                    value={project.location}
-                  />
- 
-                  <DetailItem
-                    label="City"
-                    value={project.city}
-                  />
- 
-                  <DetailItem
-                    label="State"
-                    value={project.state}
-                  />
- 
-                  <DetailItem
-                    label="Price"
-                    value={project.price}
-                  />
- 
-                  <DetailItem
-                    label="Total Area"
-                    value={project.totalArea}
-                  />
- 
-                  <DetailItem
-                    label="Possession"
-                    value={project.possession}
-                  />
- 
-                  <DetailItem
-                    label="RERA / Approval"
-                    value={project.reraNumber}
-                  />
- 
+
+                <div
+                  className={`
+                    w-full min-w-0 px-3 pb-4 sm:px-0 sm:pb-0
+                    ${mobileSections.details ? "block" : "hidden"}
+                    sm:block
+                  `}
+                >
+                  <div className="grid w-full min-w-0 gap-2.5 pt-1 sm:mt-6 sm:grid-cols-2 sm:gap-3 sm:pt-0">
+
+                    <DetailItem label="Project Name" value={project.name} />
+
+                    {/* DEVELOPER — Builder Projects */}
+                    <DetailItem
+                      label="Developer / Builder"
+                      value={project.developer}
+                    />
+
+                    <DetailItem label="Authority" value={project.authority} />
+                    <DetailItem label="Category" value={categoryLabel} />
+                    <DetailItem label="Status" value={statusLabel} />
+                    <DetailItem label="Location" value={project.location} />
+                    <DetailItem label="City" value={project.city} />
+                    <DetailItem label="State" value={project.state} />
+                    <DetailItem label="Price" value={project.price} />
+                    <DetailItem label="Total Area" value={project.totalArea} />
+                    <DetailItem label="Possession" value={project.possession} />
+                    <DetailItem
+                      label="RERA / Approval"
+                      value={project.reraNumber}
+                    />
+
+                  </div>
                 </div>
               </section>
- 
-              {/* FEATURES */}
- 
+
+              {/* =================================================
+                  FEATURES — MOBILE ACCORDION
+              ================================================== */}
+
               {features.length > 0 && (
-                <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
- 
-                  <SectionTitle
+                <section
+                  className="
+                    overflow-hidden
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    bg-white
+                    shadow-sm
+                    sm:rounded-3xl
+                    sm:p-8
+                  "
+                >
+                  <MobileAccordionHeader
                     icon={<Sparkles size={19} />}
                     title="Project Features"
+                    open={mobileSections.features}
+                    onClick={() => toggleMobileSection("features")}
                   />
- 
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
- 
-                    {features.map(
-                      (feature, index) => (
+
+                  <div
+                    className={`
+                      w-full min-w-0 px-3 pb-4 sm:px-0 sm:pb-0
+                      ${mobileSections.features ? "block" : "hidden"}
+                      sm:block
+                    `}
+                  >
+                    <div className="grid w-full min-w-0 gap-2.5 pt-1 sm:mt-6 sm:grid-cols-2 sm:gap-3 sm:pt-0">
+                      {features.map((feature, index) => (
                         <div
                           key={`${feature}-${index}`}
-                          className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3.5"
+                          className="
+                            min-w-0
+                            max-w-full
+                            flex
+                            min-h-[44px]
+                            items-center
+                            gap-3
+                            rounded-xl
+                            bg-slate-50
+                            px-3
+                            py-2.5
+                            sm:px-4
+                            sm:py-3.5
+                          "
                         >
                           <CheckCircle2
-                            size={18}
-                            className="shrink-0 text-[#b88b32]"
+                            size={16}
+                            className="shrink-0 text-[#b88b32] sm:h-[18px] sm:w-[18px]"
                           />
- 
-                          <span className="text-sm font-semibold text-slate-700">
+
+                          <span className="min-w-0 break-words [overflow-wrap:anywhere] text-[12px] font-semibold leading-5 text-slate-700 sm:text-sm">
                             {feature}
                           </span>
                         </div>
-                      )
-                    )}
- 
+                      ))}
+                    </div>
                   </div>
                 </section>
               )}
- 
-              {/* AMENITIES */}
- 
+
+              {/* =================================================
+                  AMENITIES — MOBILE ACCORDION
+              ================================================== */}
+
               {amenities.length > 0 && (
-                <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
- 
-                  <SectionTitle
+                <section
+                  className="
+                    overflow-hidden
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    bg-white
+                    shadow-sm
+                    sm:rounded-3xl
+                    sm:p-8
+                  "
+                >
+                  <MobileAccordionHeader
                     icon={<ShieldCheck size={19} />}
                     title="Amenities"
+                    open={mobileSections.amenities}
+                    onClick={() => toggleMobileSection("amenities")}
                   />
- 
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
- 
-                    {amenities.map(
-                      (amenity, index) => (
+
+                  <div
+                    className={`
+                      w-full min-w-0 px-3 pb-4 sm:px-0 sm:pb-0
+                      ${mobileSections.amenities ? "block" : "hidden"}
+                      sm:block
+                    `}
+                  >
+                    <div className="grid w-full min-w-0 gap-2.5 pt-1 sm:mt-6 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3 sm:pt-0">
+                      {amenities.map((amenity, index) => (
                         <div
                           key={`${amenity}-${index}`}
-                          className="flex items-center gap-3 rounded-xl border border-slate-100 px-4 py-3.5"
+                          className="
+                            min-w-0
+                            max-w-full
+                            flex
+                            min-h-[44px]
+                            items-center
+                            gap-3
+                            rounded-xl
+                            border
+                            border-slate-100
+                            bg-white
+                            px-3
+                            py-2.5
+                            sm:px-4
+                            sm:py-3.5
+                          "
                         >
-                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#fff8e9] text-[#b88b32]">
-                            <CheckCircle2 size={16} />
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#fff8e9] text-[#b88b32] sm:h-8 sm:w-8">
+                            <CheckCircle2 size={14} className="sm:h-4 sm:w-4" />
                           </span>
- 
-                          <span className="text-sm font-semibold text-slate-700">
+
+                          <span className="min-w-0 break-words [overflow-wrap:anywhere] text-[12px] font-semibold leading-5 text-slate-700 sm:text-sm">
                             {amenity}
                           </span>
                         </div>
-                      )
-                    )}
- 
+                      ))}
+                    </div>
                   </div>
                 </section>
               )}
- 
+
               {/* PAYMENT PLANS */}
  
               {paymentPlans.length > 0 && (
-                <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <section className="w-full min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
  
                   <SectionTitle
                     icon={<IndianRupee size={19} />}
@@ -1019,21 +1096,21 @@ function ProjectDetails() {
                       (plan, index) => (
                         <div
                           key={`${plan.name}-${index}`}
-                          className="flex flex-col gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-4 sm:flex-row sm:items-center"
+                          className="flex min-w-0 max-w-full flex-col gap-4 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 p-4 sm:flex-row sm:items-center"
                         >
  
                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-sm font-black text-[#b88b32] shadow-sm">
                             {plan.percentage || 0}%
                           </div>
  
-                          <div className="flex-1">
+                          <div className="min-w-0 flex-1">
  
                             <h3 className="text-sm font-extrabold text-slate-800">
                               {plan.name || "Payment Stage"}
                             </h3>
  
                             {plan.description && (
-                              <p className="mt-1 text-xs leading-5 text-slate-500">
+                              <p className="mt-1 break-words [overflow-wrap:anywhere] text-xs leading-5 text-slate-500">
                                 {plan.description}
                               </p>
                             )}
@@ -1053,79 +1130,77 @@ function ProjectDetails() {
               ============================================== */}
  
               {hasCustomTable && (
-                <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <section className="w-full min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
  
                   <SectionTitle
                     icon={<Table2 size={19} />}
                     title="Project Information"
                   />
  
-                  <div className="mt-6 w-full overflow-x-auto rounded-2xl border border-slate-100">
- 
-                    <table className="w-max min-w-full border-collapse text-sm">
- 
+                  {/* DESKTOP TABLE */}
+                  <div className="mt-6 hidden w-full min-w-0 overflow-x-auto rounded-2xl border border-slate-100 sm:block">
+                    <table className="w-full min-w-0 border-collapse text-sm table-fixed">
                       <thead>
                         <tr>
-                          {customTableColumns.map(
-                            (column) => (
-                              <th
-                                key={column.id}
-                                className="
-                                  min-w-[180px]
-                                  border-b
-                                  border-r
-                                  border-slate-200
-                                  bg-slate-50
-                                  px-4
-                                  py-3
-                                  text-left
-                                  text-xs
-                                  font-extrabold
-                                  uppercase
-                                  tracking-wide
-                                  text-slate-500
-                                "
-                              >
-                                {column.label ||
-                                  "—"}
-                              </th>
-                            )
-                          )}
+                          {customTableColumns.map((column) => (
+                            <th
+                              key={column.id}
+                              className="break-words border-b border-r border-slate-200 bg-slate-50 px-3 py-3 text-left text-xs font-extrabold uppercase tracking-wide text-slate-500"
+                            >
+                              {column.label || "—"}
+                            </th>
+                          ))}
                         </tr>
                       </thead>
- 
+
                       <tbody>
-                        {customTableRows.map(
-                          (row) => (
-                            <tr key={row.id}>
-                              {customTableColumns.map(
-                                (column) => (
-                                  <td
-                                    key={`${row.id}-${column.id}`}
-                                    className="
-                                      min-w-[180px]
-                                      border-b
-                                      border-r
-                                      border-slate-100
-                                      px-4
-                                      py-3
-                                      font-semibold
-                                      text-slate-700
-                                    "
-                                  >
-                                    {row.cells?.[
-                                      column.id
-                                    ] || "—"}
-                                  </td>
-                                )
-                              )}
-                            </tr>
-                          )
-                        )}
+                        {customTableRows.map((row) => (
+                          <tr key={row.id}>
+                            {customTableColumns.map((column) => (
+                              <td
+                                key={`${row.id}-${column.id}`}
+                                className="break-words [overflow-wrap:anywhere] border-b border-r border-slate-100 px-3 py-3 font-semibold text-slate-700"
+                              >
+                                {row.cells?.[column.id] || "—"}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
                       </tbody>
- 
                     </table>
- 
+                  </div>
+
+                  {/* MOBILE TABLE — SAME TABLE LAYOUT AS DESKTOP */}
+                  <div className="mt-5 w-full min-w-0 overflow-hidden rounded-2xl border border-slate-100 sm:hidden">
+                    <table className="w-full table-fixed border-collapse text-[10px]">
+                      <thead>
+                        <tr>
+                          {customTableColumns.map((column) => (
+                            <th
+                              key={column.id}
+                              className="min-w-0 break-words [overflow-wrap:anywhere] border-b border-r border-slate-200 bg-slate-50 px-2 py-2.5 text-left text-[8px] font-extrabold uppercase leading-3 tracking-wide text-slate-500 last:border-r-0"
+                            >
+                              {column.label || "—"}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {customTableRows.map((row) => (
+                          <tr key={row.id}>
+                            {customTableColumns.map((column) => (
+                              <td
+                                key={`${row.id}-${column.id}`}
+                                className="min-w-0 break-words [overflow-wrap:anywhere] border-b border-r border-slate-100 px-2 py-2.5 align-top text-[9px] font-bold leading-3.5 text-slate-700 last:border-r-0"
+                              >
+                                {row.cells?.[column.id] || "—"}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </section>
               )}
@@ -1133,14 +1208,14 @@ function ProjectDetails() {
               {/* DOCUMENTS */}
  
               {documents.length > 0 && (
-                <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <section className="w-full min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
  
                   <SectionTitle
                     icon={<FileText size={19} />}
                     title="Project Documents"
                   />
  
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  <div className="mt-6 grid min-w-0 gap-3 sm:grid-cols-2">
  
                     {documents.map(
                       (document, index) => {
@@ -1171,6 +1246,8 @@ function ProjectDetails() {
                             className="
                               group
                               flex
+                              min-w-0
+                              max-w-full
                               items-center
                               gap-4
                               rounded-2xl
@@ -1188,7 +1265,7 @@ function ProjectDetails() {
  
                             <div className="min-w-0 flex-1">
  
-                              <p className="truncate text-sm font-extrabold text-slate-800">
+                              <p className="break-all [overflow-wrap:anywhere] text-sm font-extrabold text-slate-800">
                                 {documentName}
                               </p>
  
@@ -1214,14 +1291,14 @@ function ProjectDetails() {
               {/* GALLERY */}
  
               {images.length > 0 && (
-                <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <section className="w-full min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
  
                   <SectionTitle
                     icon={<Sparkles size={19} />}
                     title="Project Gallery"
                   />
  
-                  <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  <div className="mt-6 grid min-w-0 grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
  
                     {images.map(
                       (image, index) => (
@@ -1262,11 +1339,11 @@ function ProjectDetails() {
                 RIGHT SIDEBAR
             ================================================== */}
  
-            <aside className="lg:sticky lg:top-24 lg:h-fit">
+            <aside className="w-full min-w-0 max-w-full lg:sticky lg:top-24 lg:h-fit">
  
               <div
                 id="project-inquiry"
-                className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+                className="w-full min-w-0 max-w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
               >
  
                 <div className="bg-slate-950 p-6 text-white">
@@ -1279,7 +1356,7 @@ function ProjectDetails() {
                     Get Project Details
                   </h2>
  
-                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                  <p className="mt-2 break-words [overflow-wrap:anywhere] text-sm leading-6 text-slate-400">
                     Connect with our team for pricing,
                     availability and more information.
                   </p>
@@ -1353,7 +1430,7 @@ function ProjectDetails() {
  
               {/* PROJECT STATUS */}
  
-              <div className="mt-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="mt-4 w-full min-w-0 max-w-full rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
  
                 <div className="flex items-center gap-3">
  
@@ -1378,7 +1455,7 @@ function ProjectDetails() {
               {/* APPROVAL */}
  
               {project.reraNumber && (
-                <div className="mt-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div className="mt-4 w-full min-w-0 max-w-full rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
  
                   <div className="flex items-start gap-3">
  
@@ -1548,7 +1625,7 @@ function Stat({
           {label}
         </p>
  
-        <p className="mt-1 truncate text-sm font-extrabold text-slate-800">
+        <p className="mt-1 break-words [overflow-wrap:anywhere] text-sm font-extrabold leading-5 text-slate-800">
           {value || "—"}
         </p>
  
@@ -1563,6 +1640,98 @@ function Stat({
 |--------------------------------------------------------------------------
 */
  
+/*
+|--------------------------------------------------------------------------
+| MOBILE ACCORDION HEADER
+|--------------------------------------------------------------------------
+| Mobile par clickable dropdown header.
+| Desktop (sm+) par chevron hidden hai aur section always open rehta hai.
+|--------------------------------------------------------------------------
+*/
+
+function MobileAccordionHeader({
+  icon,
+  title,
+  open,
+  onClick,
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={open}
+      className="
+        flex
+        min-h-[66px]
+        w-full
+        items-center
+        justify-between
+        gap-3
+        px-4
+        py-3.5
+        text-left
+        transition
+        hover:bg-slate-50
+        sm:min-h-0
+        sm:cursor-default
+        sm:px-0
+        sm:py-0
+        sm:hover:bg-transparent
+      "
+    >
+      <span className="flex min-w-0 items-center gap-3">
+        <span
+          className="
+            flex
+            h-9
+            w-9
+            shrink-0
+            items-center
+            justify-center
+            rounded-xl
+            bg-[#fff8e9]
+            text-[#b88b32]
+            sm:h-10
+            sm:w-10
+          "
+        >
+          {icon}
+        </span>
+
+        <span className="break-words text-[15px] font-black tracking-tight text-slate-950 sm:text-xl">
+          {title}
+        </span>
+      </span>
+
+      <span
+        className="
+          flex
+          h-8
+          w-8
+          shrink-0
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-slate-200
+          bg-white
+          text-slate-500
+          transition-transform
+          duration-300
+          sm:hidden
+        "
+      >
+        <ChevronDown
+          size={17}
+          className={`transition-transform duration-300 ${
+            open ? "rotate-180" : "rotate-0"
+          }`}
+        />
+      </span>
+    </button>
+  );
+}
+
 function SectionTitle({
   icon,
   title,
@@ -1574,7 +1743,7 @@ function SectionTitle({
         {icon}
       </div>
  
-      <h2 className="text-xl font-black tracking-tight text-slate-950">
+      <h2 className="min-w-0 break-words text-xl font-black tracking-tight text-slate-950">
         {title}
       </h2>
  
@@ -1603,16 +1772,16 @@ function DetailItem({
   }
  
   return (
-    <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3.5">
- 
-      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+    <div className="min-w-0 max-w-full overflow-hidden rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 sm:px-4 sm:py-3.5">
+
+      <p className="text-[9px] font-bold uppercase tracking-[0.04em] text-slate-400 sm:text-[11px] sm:tracking-wider">
         {label}
       </p>
- 
-      <p className="mt-1.5 text-sm font-extrabold text-slate-800">
+
+      <p className="mt-1 min-w-0 break-all [overflow-wrap:anywhere] text-[11px] font-extrabold leading-4 text-slate-800 sm:mt-1.5 sm:text-sm sm:leading-normal">
         {value}
       </p>
- 
+
     </div>
   );
 }

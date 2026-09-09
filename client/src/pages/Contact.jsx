@@ -19,20 +19,19 @@ import {
 function Contact() {
   const navigate = useNavigate();
 
-  /*
-  ============================================================
-  SCROLL TO CONTACT FORM
-  ============================================================
-  Handles:
+  /* ============================================================
+     SCROLL TO CONTACT FORM
+     ============================================================
+     
+     Handles:
 
-  /contact
-  /contact#contact-form
+     /contact
+     /contact#contact-form
 
-  Footer "Talk To An Expert" uses:
+     Footer "Talk To An Expert" uses:
 
-  /contact#contact-form
-  ============================================================
-  */
+     /contact#contact-form
+  ============================================================ */
 
   useEffect(() => {
     if (window.location.hash === "#contact-form") {
@@ -51,11 +50,9 @@ function Contact() {
     }
   }, []);
 
-  /*
-  ============================================================
-  CALL US
-  ============================================================
-  */
+  /* ============================================================
+     CALL US
+  ============================================================ */
 
   const handleCall = () => {
     const called = callClient();
@@ -67,11 +64,9 @@ function Contact() {
     }
   };
 
-  /*
-  ============================================================
-  WHATSAPP
-  ============================================================
-  */
+  /* ============================================================
+     WHATSAPP
+  ============================================================ */
 
   const handleWhatsApp = () => {
     const whatsappNumber = CONTACT_CONFIG?.whatsapp;
@@ -102,22 +97,35 @@ function Contact() {
     <div className="min-h-screen w-full overflow-x-hidden bg-white text-[#0b1b36]">
 
       {/* =====================================================
-          STICKY NAVBAR
-      ====================================================== */}
+          FIXED NAVBAR
+          ===================================================== */}
 
-      <div className="sticky top-0 z-[100] w-full">
+      <div
+        className="
+          fixed
+          left-0
+          right-0
+          top-0
+          z-[100]
+          w-full
+          border-b
+          border-white/10
+          bg-[#071525]/90
+          backdrop-blur-xl
+        "
+      >
         <Navbar />
       </div>
 
       {/* =====================================================
           MAIN
-      ====================================================== */}
+      ===================================================== */}
 
       <main className="w-full overflow-x-hidden">
 
         {/* =====================================================
             HERO
-        ====================================================== */}
+        ===================================================== */}
 
         <section className="relative w-full overflow-hidden bg-[#0b1b36]">
 
@@ -151,9 +159,34 @@ function Contact() {
             "
           />
 
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div
+            className="
+              relative
+              z-10
+              mx-auto
+              w-full
+              max-w-7xl
+              px-5
+              sm:px-6
+              lg:px-8
+            "
+          >
 
-            <div className="max-w-4xl py-20 sm:py-24 lg:py-28">
+            {/* =================================================
+                HERO CONTENT
+            ================================================== */}
+
+            <div
+              className="
+                max-w-4xl
+                py-20
+                pt-32
+                sm:py-24
+                sm:pt-36
+                lg:py-28
+                lg:pt-40
+              "
+            >
 
               {/* Label */}
 
@@ -225,24 +258,57 @@ function Contact() {
 
         {/* =====================================================
             CONTACT FORM
-        ====================================================== */}
+        ===================================================== */}
 
         <section
           id="contact-form"
-          className="w-full scroll-mt-20 bg-white py-10 sm:py-12 lg:py-14"
+          className="
+            w-full
+            scroll-mt-24
+            bg-white
+            py-10
+            sm:py-12
+            lg:py-14
+          "
         >
-          <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
+          <div
+            className="
+              mx-auto
+              w-full
+              max-w-[1180px]
+              px-4
+              sm:px-6
+              lg:px-8
+            "
+          >
             <ContactSection />
           </div>
         </section>
 
         {/* =====================================================
             MAP
-        ====================================================== */}
+        ===================================================== */}
 
-        <section className="w-full bg-[#f8fafc] py-16 sm:py-20 lg:py-24">
+        <section
+          className="
+            w-full
+            bg-[#f8fafc]
+            py-16
+            sm:py-20
+            lg:py-24
+          "
+        >
 
-          <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div
+            className="
+              mx-auto
+              w-full
+              max-w-7xl
+              px-5
+              sm:px-6
+              lg:px-8
+            "
+          >
 
             {/* Heading */}
 
@@ -280,7 +346,14 @@ function Contact() {
                 Visit Our Office
               </h2>
 
-              <p className="mt-2 text-sm text-slate-500 sm:text-base">
+              <p
+                className="
+                  mt-2
+                  text-sm
+                  text-slate-500
+                  sm:text-base
+                "
+              >
                 Find our office in Noida and connect with our real estate
                 advisory team.
               </p>
@@ -322,11 +395,27 @@ function Contact() {
 
         {/* =====================================================
             CALL TO ACTION
-        ====================================================== */}
+        ===================================================== */}
 
-        <section className="w-full bg-white py-12 sm:py-16">
+        <section
+          className="
+            w-full
+            bg-white
+            py-12
+            sm:py-16
+          "
+        >
 
-          <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div
+            className="
+              mx-auto
+              w-full
+              max-w-7xl
+              px-5
+              sm:px-6
+              lg:px-8
+            "
+          >
 
             <div
               className="
@@ -528,7 +617,7 @@ function Contact() {
 
       {/* =====================================================
           FOOTER
-      ====================================================== */}
+      ===================================================== */}
 
       <div className="w-full overflow-hidden">
         <Footer />
