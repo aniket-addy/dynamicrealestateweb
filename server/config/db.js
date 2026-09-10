@@ -1,33 +1,43 @@
 const mongoose = require("mongoose");
 
-/*
-|--------------------------------------------------------------------------
-| MONGODB CONNECTION (Serverless & Standard Server Compatible)
-|--------------------------------------------------------------------------
-*/
-
 let cachedPromise = null;
 
 const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) {
+  // Already connected
+  if (mongoose.connection.readyState === 1) {
     return mongoose.connection;
   }
 
+  // Connection already in progress
   if (cachedPromise) {
     return cachedPromise;
   }
 
+  const mongoURI = process.env.MONGO_URI;
+
+  if (!mongoURI) {
+    throw new Error(
+      "MONGO_URI is missing in Render Environment Variables"
+    );
+  }
+
+  console.log("Connecting to MongoDB Atlas...");
+
+  cachedPromise = mongoose.connect(mongoURI, {
+    serverSelectionTimeoutMS: 30000,
+    connectTimeoutMS: 30000,
+    socketTimeoutMS: 45000,
+
+    // Force IPv4 on Render
+    family: 4,
+
+    // MongoDB Atlas TLS
+    tls: true,
+
+    maxPoolSize: 10,
+  });
+
   try {
-    const mongoURI = process.env.MONGO_URI;
-
-    if (!mongoURI) {
-      throw new Error(
-        "MONGO_URI is missing in environment variables"
-      );
-    }
-
-    cachedPromise = mongoose.connect(mongoURI);
-
     const connection = await cachedPromise;
 
     console.log(
@@ -43,12 +53,8 @@ const connectDB = async () => {
       error.message
     );
 
-    if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
-      process.exit(1);
-    }
-
     throw error;
   }
 };
 
-module.exports = connectDB;
+module.exports = connectDB;

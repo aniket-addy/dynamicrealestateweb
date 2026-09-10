@@ -2,43 +2,24 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/db");
 
+// Routes
 const authRoutes = require("./routes/authRoutes");
-const profileRoutes =
-  require("./routes/profileRoutes");
-
-// =========================================================
-// ROUTES
-// =========================================================
-
-const authorityProjectRoutes = require(
-  "./routes/authorityProjectRoutes"
-);
-
-const builderProjectRoutes = require(
-  "./routes/builderProjectRoutes"
-);
-
-const leadRoutes = require(
-  "./routes/leadRoutes"
-);
-
-// =========================================================
-// BLOG ROUTES
-// =========================================================
-
-const blogRoutes = require(
-  "./routes/blogRoutes"
-);
-
-
-// =========================================================
-// APP
-// =========================================================
+const authorityProjectRoutes = require("./routes/authorityProjectRoutes");
+const builderProjectRoutes = require("./routes/builderProjectRoutes");
+const leadRoutes = require("./routes/leadRoutes");
+const blogRoutes = require("./routes/blogRoutes");
 
 const app = express();
+
+const PORT = process.env.PORT || 5000;
+
+/* =====================================================
+   CORS
+===================================================== */
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -46,73 +27,54 @@ const allowedOrigins = [
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
-
-// =========================================================
-// DATABASE
-// =========================================================
-
-connectDB();
-
-
-// =========================================================
-// CORS
-// =========================================================
-
 app.use(
   cors({
-    origin(origin, callback) {
-      if (!origin) return callback(null, true);
-
-      const isAllowed =
-        allowedOrigins.includes(origin) ||
-        origin.endsWith(".vercel.app") ||
-        (process.env.NODE_ENV !== "production" && origin.includes("localhost"));
-
-      if (isAllowed) {
+    origin: function (origin, callback) {
+      // Allow requests without Origin
+      if (!origin) {
         return callback(null, true);
       }
+
+      // Exact allowed origins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Allow Vercel deployments
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      // Allow localhost during development
+      if (
+        process.env.NODE_ENV !== "production" &&
+        origin.includes("localhost")
+      ) {
+        return callback(null, true);
+      }
+
+      console.log("Blocked by CORS:", origin);
 
       return callback(
         new Error("Origin not allowed by CORS")
       );
     },
+
     credentials: true,
   })
 );
 
-// Database middleware ensuring connection in serverless environments
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
+/* =====================================================
+   MIDDLEWARE
+===================================================== */
 
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(cookieParser());
 
-
-// =========================================================
-// BODY PARSER
-// =========================================================
-
-app.use(
-  express.json({
-    limit: "50mb",
-  })
-);
-
-app.use(
-  express.urlencoded({
-    extended: true,
-    limit: "50mb",
-  })
-);
-
-
-// =========================================================
-// ROOT / HEALTH CHECK
-// =========================================================
+/* =====================================================
+   HEALTH CHECK
+===================================================== */
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -121,148 +83,96 @@ app.get("/", (req, res) => {
   });
 });
 
+/* =====================================================
+   DATABASE MIDDLEWARE
+===================================================== */
 
-// ==========================================
-// AUTH API
-// ==========================================
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error(
+      "Database middleware error:",
+      error.message
+    );
 
-app.use(
-  "/api/auth",
-  authRoutes
-);
+    res.status(503).json({
+      success: false,
+      message: "Database connection failed",
+    });
+  }
+});
 
-app.use(
-  "/api/auth",
-  profileRoutes
-);
+/* =====================================================
+   API ROUTES
+===================================================== */
 
-
-// =========================================================
-// AUTHORITY PROJECT API
-// =========================================================
-//
-// GET    /api/authority-projects
-// GET    /api/authority-projects/:id
-// POST   /api/authority-projects
-// PUT    /api/authority-projects/:id
-// DELETE /api/authority-projects/:id
-//
-// =========================================================
+app.use("/api/auth", authRoutes);
 
 app.use(
   "/api/authority-projects",
   authorityProjectRoutes
 );
 
-
-// =========================================================
-// BUILDER PROJECT API
-// =========================================================
-//
-// GET    /api/builder-projects
-// GET    /api/builder-projects/:id
-// POST   /api/builder-projects
-// PUT    /api/builder-projects/:id
-// DELETE /api/builder-projects/:id
-//
-// =========================================================
-
 app.use(
   "/api/builder-projects",
   builderProjectRoutes
 );
 
+app.use("/api/leads", leadRoutes);
 
-// =========================================================
-// LEAD API
-// =========================================================
-//
-// GET    /api/leads
-// GET    /api/leads/:id
-// POST   /api/leads
-// PUT    /api/leads/:id
-// PATCH  /api/leads/:id/status
-// DELETE /api/leads/:id
-// GET    /api/leads/stats
-//
-// =========================================================
+app.use("/api/blogs", blogRoutes);
 
-app.use(
-  "/api/leads",
-  leadRoutes
-);
-
-
-// =========================================================
-// BLOG API
-// =========================================================
-//
-// GET    /api/blogs
-// GET    /api/blogs/:id
-// POST   /api/blogs
-// PUT    /api/blogs/:id
-// DELETE /api/blogs/:id
-//
-// =========================================================
-
-app.use(
-  "/api/blogs",
-  blogRoutes
-);
-
-
-// =========================================================
-// 404 HANDLER
-// =========================================================
+/* =====================================================
+   404 HANDLER
+===================================================== */
 
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: `Route not found: ${req.method} ${req.originalUrl}`,
+    message: "API route not found",
+    path: req.originalUrl,
   });
 });
 
+/* =====================================================
+   GLOBAL ERROR HANDLER
+===================================================== */
 
-// =========================================================
-// GLOBAL ERROR HANDLER
-// =========================================================
+app.use((error, req, res, next) => {
+  console.error("Global Error:", error);
 
-app.use(
-  (err, req, res, next) => {
-    console.error(
-      "Server Error:",
-      err
-    );
-
-    res.status(500).json({
+  if (error.message === "Origin not allowed by CORS") {
+    return res.status(403).json({
       success: false,
-      message: "Internal server error",
-
-      error:
-        process.env.NODE_ENV === "development"
-          ? err.message
-          : undefined,
+      message: "CORS error: Origin not allowed",
     });
   }
-);
 
+  return res.status(500).json({
+    success: false,
+    message: error.message || "Internal Server Error",
+  });
+});
 
-// =========================================================
-// SERVER
-// =========================================================
+/* =====================================================
+   START SERVER AFTER DATABASE CONNECTION
+===================================================== */
 
-const PORT =
-  process.env.PORT || 5000;
-
-if (!process.env.VERCEL) {
-  app.listen(
-    PORT,
-    () => {
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
       console.log(
-        `Server running on http://localhost:${PORT}`
+        `Server running on port ${PORT}`
       );
-    }
-  );
-}
+    });
+  })
+  .catch((error) => {
+    console.error(
+      "MongoDB startup failed:",
+      error.message
+    );
 
-module.exports = app;
+    process.exit(1);
+  });
