@@ -1312,13 +1312,13 @@ function EditAuthorityProject() {
                 }
                 onKeyDown={handleFeatureKeyDown}
                 placeholder="Enter feature"
-                className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
+                className="min-w-0 flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
               />
 
               <button
                 type="button"
                 onClick={addFeature}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+                className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
               >
                 <Plus className="h-4 w-4" />
                 Add
@@ -1377,13 +1377,13 @@ function EditAuthorityProject() {
                 }
                 onKeyDown={handleAmenityKeyDown}
                 placeholder="Enter amenity"
-                className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
+                className="min-w-0 flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
               />
 
               <button
                 type="button"
                 onClick={addAmenity}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+                className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
               >
                 <Plus className="h-4 w-4" />
                 Add

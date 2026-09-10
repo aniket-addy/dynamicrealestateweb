@@ -1906,7 +1906,7 @@ function EditBuilderProject() {
             SAVE BAR
         ====================================================== */}
 
-        <div className="sticky bottom-4 z-10 flex items-center justify-end gap-3 rounded-xl border border-gray-200 bg-white/95 p-4 shadow-lg backdrop-blur">
+        <div className="flex items-center justify-end gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
 
           <button
             type="button"
