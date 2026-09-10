@@ -456,34 +456,20 @@ function ProjectDetails() {
     .filter(Boolean)
     .join(", ");
  
-  // =========================================================
   // MAIN UI
   // =========================================================
  
   return (
-    <div className="min-h-screen w-full min-w-0 max-w-full overflow-x-hidden bg-[#f8fafc]">
+    <>
+      {/* =====================================================
+          NAVBAR — overflow-x-hidden ke BAHAR rakhna zaroori hai
+          warna sticky kaam nahi karta
+      ====================================================== */}
+
+      <Navbar />
+
+      <div className="min-h-screen w-full min-w-0 max-w-full overflow-x-hidden bg-[#f8fafc]">
  
- {/* =====================================================
-    NAVBAR
-====================================================== */}
-
-<div
-  className="
-    fixed
-    inset-x-0
-    top-0
-    z-[100]
-    w-full
-    bg-white
-    shadow-[0_1px_12px_rgba(15,23,42,0.05)]
-    lg:sticky
-  "
->
-  <Navbar />
-</div>
-
-{/* Mobile fixed navbar ke neeche content hide na ho */}
-<div className="h-[64px] lg:hidden" />
       {/* =====================================================
           BREADCRUMB / BACK
       ====================================================== */}
@@ -1600,8 +1586,9 @@ function ProjectDetails() {
  
         </div>
       )}
- 
+
     </div>
+    </>
   );
 }
  
